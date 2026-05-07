@@ -166,5 +166,42 @@ window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPro
 if('serviceWorker' in navigator){navigator.serviceWorker.register('./service-worker.js').catch(()=>{})}
 render();if(st.profile.saved)show('Today');
 </script>
+<script type="module">
+  
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAkF2i0utPJayFqhzqWEmGh2hIUGhMJZ2o",
+    authDomain: "healthylife-a054b.firebaseapp.com",
+    projectId: "healthylife-a054b",
+    storageBucket: "healthylife-a054b.firebasestorage.app",
+    messagingSenderId: "307773262968",
+    appId: "1:307773262968:web:7fdc12c7789f3d447ab18d"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  window.registerUser = async function(email, password) {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      alert("נרשמת בהצלחה ✅");
+      console.log(userCredential.user);
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+
+  window.loginUser = async function(email, password) {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      alert("התחברת בהצלחה ✅");
+      console.log(userCredential.user);
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+</script>
 </body>
 </html>
