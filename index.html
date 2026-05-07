@@ -34,6 +34,28 @@
       <div class="grid2"><div><label>מטרה</label><select id="goal"><option value="cut">ירידה מתונה</option><option value="maintain">שמירה</option><option value="bulk">עלייה מבוקרת</option></select></div><div><label>סגנון מאמן</label><select id="tone"><option value="normal">רגיל</option><option value="funny">מצחיק</option><option value="military">צבאי</option></select></div></div>
       <button onclick="saveProfile()">חשב ושמור יעדים</button><div id="profileResult" class="notice"></div>
     </div>
+
+    <div class="card">
+      <h2>🔐 התחברות וסנכרון</h2>
+      <div class="small">התחברות עם Firebase. בשלב הבא נחבר סנכרון מלא של הנתונים בין מכשירים.</div>
+      <div class="grid2">
+        <div>
+          <label>אימייל</label>
+          <input id="loginEmail" type="email" placeholder="your@email.com">
+        </div>
+        <div>
+          <label>סיסמה</label>
+          <input id="loginPassword" type="password" placeholder="לפחות 6 תווים">
+        </div>
+      </div>
+      <div class="grid3">
+        <button onclick="registerUser(loginEmail.value, loginPassword.value)">הרשמה</button>
+        <button class="greenbtn" onclick="loginUser(loginEmail.value, loginPassword.value)">התחברות</button>
+        <button class="mutedbtn" onclick="logoutUser()">התנתקות</button>
+      </div>
+      <div id="authStatus" class="notice">לא מחובר</div>
+    </div>
+
     <div class="card"><h2>📲 התקנה כאפליקציה</h2><div class="small">אחרי העלאה ל-Netlify/שרת HTTPS: באנדרואיד יופיע Install app. באייפון פתח בספארי ואז Share → Add to Home Screen.</div><button id="installBtn" class="greenbtn hide">התקן כאפליקציה</button></div>
   </section>
 
@@ -167,9 +189,14 @@ if('serviceWorker' in navigator){navigator.serviceWorker.register('./service-wor
 render();if(st.profile.saved)show('Today');
 </script>
 <script type="module">
-  
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyAkF2i0utPJayFqhzqWEmGh2hIUGhMJZ2o",
@@ -183,25 +210,60 @@ render();if(st.profile.saved)show('Today');
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
+  function setAuthStatus(text, ok = false) {
+    const box = document.getElementById("authStatus");
+    if (!box) return;
+    box.textContent = text;
+    box.className = ok ? "notice ok" : "notice";
+  }
+
   window.registerUser = async function(email, password) {
     try {
+      if (!email || !password) {
+        alert("נא להזין אימייל וסיסמה");
+        return;
+      }
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      setAuthStatus("מחובר: " + userCredential.user.email, true);
       alert("נרשמת בהצלחה ✅");
-      console.log(userCredential.user);
     } catch (error) {
       alert(error.message);
+      setAuthStatus("שגיאה: " + error.message);
     }
-  }
+  };
 
   window.loginUser = async function(email, password) {
     try {
+      if (!email || !password) {
+        alert("נא להזין אימייל וסיסמה");
+        return;
+      }
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      setAuthStatus("מחובר: " + userCredential.user.email, true);
       alert("התחברת בהצלחה ✅");
-      console.log(userCredential.user);
+    } catch (error) {
+      alert(error.message);
+      setAuthStatus("שגיאה: " + error.message);
+    }
+  };
+
+  window.logoutUser = async function() {
+    try {
+      await signOut(auth);
+      setAuthStatus("לא מחובר");
+      alert("התנתקת בהצלחה");
     } catch (error) {
       alert(error.message);
     }
-  }
+  };
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      setAuthStatus("מחובר: " + user.email, true);
+    } else {
+      setAuthStatus("לא מחובר");
+    }
+  });
 </script>
 </body>
 </html>
