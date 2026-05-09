@@ -1,269 +1,952 @@
 <!doctype html>
 <html lang="he" dir="rtl">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#007aff">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="אורח חיים בריא">
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="apple-touch-icon" href="icons/icon-192.png">
-  <title>אורח חיים בריא</title>
-  <style>
-    :root{--bg:#f4f6fb;--card:#fff;--txt:#111827;--muted:#6b7280;--b:#e5e7eb;--blue:#007aff;--green:#22c55e;--yellow:#f59e0b;--red:#ef4444;--purple:#8b5cf6;--dark:#0f172a}
-    *{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--txt);padding:14px 14px 100px}.app{max-width:620px;margin:auto}
-    h1{margin:8px 0 2px;font-size:30px}h2{margin:0 0 12px}.card{background:var(--card);border:1px solid var(--b);border-radius:24px;padding:16px;margin:12px 0;box-shadow:0 8px 28px #0000000d}.small{font-size:13px;color:var(--muted);line-height:1.45}
-    label{display:block;margin:9px 2px 5px;font-size:13px;color:var(--muted);font-weight:800}input,select,textarea,button{font:inherit;width:100%;border-radius:16px;border:1px solid var(--b);padding:12px}input,select,textarea{background:#f1f3f8}button{border:0;background:var(--blue);color:#fff;font-weight:900;margin-top:10px;cursor:pointer}
-    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.bar{height:10px;border-radius:99px;background:#e5e7eb;overflow:hidden}.fill{height:100%;background:var(--blue);border-radius:99px}.fill.green{background:var(--green)}.fill.yellow{background:var(--yellow)}.fill.red{background:var(--red)}.fill.purple{background:var(--purple)}
-    .row{display:flex;justify-content:space-between;gap:10px;margin:10px 0 7px;font-size:14px;font-weight:800}.entry{border-top:1px solid var(--b);padding:12px 0;display:grid;grid-template-columns:1fr auto;gap:10px}.entry:first-child{border-top:0}.del{background:#fee2e2;color:#b91c1c;width:auto;margin:0;padding:8px 10px}.notice{background:#f8fafc;border-radius:16px;padding:12px;color:var(--muted);margin-top:10px;line-height:1.45;white-space:pre-wrap}.ok{background:#ecfdf5;color:#047857}.err{background:#fff1f2;color:#be123c}.yellowbox{background:#fffbeb;color:#92400e}.traffic{display:grid;grid-template-columns:1fr 1fr;gap:10px}.light{background:#f8fafc;border:1px solid var(--b);border-radius:18px;padding:12px}.chiprow{display:flex;gap:8px;overflow-x:auto;margin-top:10px;padding-bottom:4px}.chip{background:#eef2ff;color:#3730a3;width:auto;white-space:nowrap;margin:0;padding:10px 12px}.chip.active{background:var(--blue);color:white}
-    .suggest{position:relative}.suggestbox{position:absolute;z-index:10;top:100%;left:0;right:0;background:#fff;border:1px solid var(--b);border-radius:16px;box-shadow:0 10px 25px #0001;overflow:hidden;max-height:290px;overflow-y:auto}.suggestbox button{background:#fff;color:#111;text-align:right;border-radius:0;margin:0;border-bottom:1px solid var(--b)}.hide{display:none!important}.quick{display:grid;grid-template-columns:1fr auto auto;gap:8px}.mic{width:58px;font-size:22px}.mic.rec{background:#fee2e2;color:#b91c1c}.badge{display:inline-block;border-radius:999px;background:#eaf3ff;color:#007aff;font-weight:900;padding:5px 8px;font-size:11px;margin:2px 3px}.dark-card{background:var(--dark);color:white}.dark-card .small{color:#cbd5e1}img.preview{width:100%;border-radius:20px;margin-top:10px;max-height:280px;object-fit:cover}.mini-btn{width:auto;padding:8px 10px;margin:4px;background:#eef2ff;color:#3730a3}.mutedbtn{background:#6b7280}.greenbtn{background:var(--green)}.orangebtn{background:#f59e0b}.redbtn{background:#ef4444}
-    nav{position:fixed;bottom:0;left:0;right:0;background:#ffffffee;backdrop-filter:blur(15px);border-top:1px solid var(--b);display:grid;grid-template-columns:repeat(7,1fr);gap:2px;padding:8px 4px calc(8px + env(safe-area-inset-bottom))}nav button{background:transparent;color:#6b7280;margin:0;padding:7px 1px;font-size:10px}nav button.on{background:#eaf3ff;color:var(--blue)}.ico{display:block;font-size:18px}.page{display:none}.page.on{display:block}
-    @media(max-width:390px){body{padding-left:9px;padding-right:9px}.grid2{grid-template-columns:1fr}.traffic{grid-template-columns:1fr}nav button{font-size:9px}.quick{grid-template-columns:1fr auto}}
-  </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>אורח חיים בריא</title>
+    <style>
+        :root {
+            --bg: #f4f6fb;
+            --card: #fff;
+            --txt: #111827;
+            --muted: #6b7280;
+            --b: #e5e7eb;
+            --blue: #007aff;
+            --green: #22c55e;
+            --yellow: #f59e0b;
+            --red: #ef4444;
+            --purple: #8b5cf6
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+            color: var(--txt);
+            padding: 14px 14px 90px
+        }
+
+        .app {
+            max-width: 540px;
+            margin: auto
+        }
+
+        h1 {
+            margin: 8px 0 2px;
+            font-size: 30px
+        }
+
+        h2 {
+            margin: 0 0 12px
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--b);
+            border-radius: 24px;
+            padding: 16px;
+            margin: 12px 0;
+            box-shadow: 0 8px 28px #0000000d
+        }
+
+        .small {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.45
+        }
+
+        label {
+            display: block;
+            margin: 9px 2px 5px;
+            font-size: 13px;
+            color: var(--muted);
+            font-weight: 800
+        }
+
+        input,
+        select,
+        textarea,
+        button {
+            font: inherit;
+            width: 100%;
+            border-radius: 16px;
+            border: 1px solid var(--b);
+            padding: 12px
+        }
+
+        input,
+        select,
+        textarea {
+            background: #f1f3f8
+        }
+
+        button {
+            border: 0;
+            background: var(--blue);
+            color: #fff;
+            font-weight: 900;
+            margin-top: 10px
+        }
+
+        .grid2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px
+        }
+
+        .grid3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px
+        }
+
+        .bar {
+            height: 10px;
+            border-radius: 99px;
+            background: #e5e7eb;
+            overflow: hidden
+        }
+
+        .fill {
+            height: 100%;
+            background: var(--blue);
+            border-radius: 99px
+        }
+
+        .fill.green {
+            background: var(--green)
+        }
+
+        .fill.yellow {
+            background: var(--yellow)
+        }
+
+        .fill.red {
+            background: var(--red)
+        }
+
+        .fill.purple {
+            background: var(--purple)
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 10px 0 7px;
+            font-size: 14px;
+            font-weight: 800
+        }
+
+        .entry {
+            border-top: 1px solid var(--b);
+            padding: 12px 0;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 10px
+        }
+
+        .entry:first-child {
+            border-top: 0
+        }
+
+        .del {
+            background: #fee2e2;
+            color: #b91c1c;
+            width: auto;
+            margin: 0;
+            padding: 8px 10px
+        }
+
+        .notice {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 12px;
+            color: var(--muted);
+            margin-top: 10px;
+            line-height: 1.45
+        }
+
+        .ok {
+            background: #ecfdf5;
+            color: #047857
+        }
+
+        .err {
+            background: #fff1f2;
+            color: #be123c
+        }
+
+        .traffic {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px
+        }
+
+        .light {
+            background: #f8fafc;
+            border: 1px solid var(--b);
+            border-radius: 18px;
+            padding: 12px
+        }
+
+        .chiprow {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            margin-top: 10px
+        }
+
+        .chip {
+            background: #eef2ff;
+            color: #3730a3;
+            width: auto;
+            white-space: nowrap;
+            margin: 0;
+            padding: 10px 12px
+        }
+
+        .suggest {
+            position: relative
+        }
+
+        .suggestbox {
+            position: absolute;
+            z-index: 10;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border: 1px solid var(--b);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px #0001;
+            overflow: hidden
+        }
+
+        .suggestbox button {
+            background: #fff;
+            color: #111;
+            text-align: right;
+            border-radius: 0;
+            margin: 0;
+            border-bottom: 1px solid var(--b)
+        }
+
+        .hide {
+            display: none
+        }
+
+        nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #ffffffee;
+            backdrop-filter: blur(15px);
+            border-top: 1px solid var(--b);
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px;
+            padding: 8px 8px calc(8px + env(safe-area-inset-bottom))
+        }
+
+        nav button {
+            background: transparent;
+            color: #6b7280;
+            margin: 0;
+            padding: 7px 2px;
+            font-size: 12px
+        }
+
+        nav button.on {
+            background: #eaf3ff;
+            color: var(--blue)
+        }
+
+        .ico {
+            display: block;
+            font-size: 21px
+        }
+
+        .page {
+            display: none
+        }
+
+        .page.on {
+            display: block
+        }
+
+        .mic {
+            width: 58px;
+            font-size: 22px
+        }
+
+        .mic.rec {
+            background: #fee2e2;
+            color: #b91c1c
+        }
+
+        .mic.rec {
+            background: #fee2e2;
+            color: #b91c1c
+        }
+
+        .quick {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px
+        }
+
+        .meal-chip.on {
+            background: var(--blue);
+            color: #fff
+        }
+        .greenbtn{background:#22c55e!important;color:white!important}
+        .orangebtn{background:#f59e0b!important;color:white!important}
+        .mutedbtn{background:#6b7280!important;color:white!important}
+        .mini-btn{width:auto;background:#eef2ff;color:#3730a3;margin:4px;padding:9px 11px;border-radius:14px}
+        .statusOk{background:#ecfdf5;color:#047857}
+        .statusBad{background:#fff1f2;color:#be123c}
+
+    </style>
 </head>
+
 <body>
-<div class="app">
-  <h1>אורח חיים בריא</h1><div class="small" id="date"></div>
+    <div class="app">
+        <h1>אורח חיים בריא</h1>
+        <div class="small" id="date"></div>
 
-  <section id="pProfile" class="page on">
-    <div class="card"><h2>👤 רישום ראשוני</h2><div class="small">יעדים לפי גיל, משקל, גובה, פעילות ויעד משקל. הערכה כללית בלבד.</div>
-      <div class="grid2"><div><label>גיל</label><input id="age" inputmode="decimal"></div><div><label>משקל ק״ג</label><input id="weight" inputmode="decimal"></div></div>
-      <div class="grid2"><div><label>גובה ס״מ</label><input id="height" inputmode="decimal"></div><div><label>יעד משקל ק״ג</label><input id="goalWeight" inputmode="decimal"></div></div>
-      <div class="grid2"><div><label>מין</label><select id="gender"><option value="male">גבר</option><option value="female">אישה</option></select></div><div><label>פעילות</label><select id="activity"><option value="1.2">יושבני</option><option value="1.375">קל</option><option value="1.55">בינוני</option><option value="1.725">גבוה</option></select></div></div>
-      <div class="grid2"><div><label>מטרה</label><select id="goal"><option value="cut">ירידה מתונה</option><option value="maintain">שמירה</option><option value="bulk">עלייה מבוקרת</option></select></div><div><label>סגנון מאמן</label><select id="tone"><option value="normal">רגיל</option><option value="funny">מצחיק</option><option value="military">צבאי</option></select></div></div>
-      <button onclick="saveProfile()">חשב ושמור יעדים</button><div id="profileResult" class="notice"></div>
+        <section id="pProfile" class="page on">
+            <div class="card">
+                <h2>👤 רישום ראשוני</h2>
+                <div class="small">הזנת גיל, משקל, גובה, פעילות ויעד. האפליקציה מחשבת יעד קלוריות וחלוקה יומית.</div>
+                <div class="grid2">
+                    <div><label>גיל</label><input id="age" inputmode="decimal" placeholder="63"></div>
+                    <div><label>משקל נוכחי ק״ג</label><input id="weight" inputmode="decimal" placeholder="83.5"></div>
+                </div>
+                <div class="grid2">
+                    <div><label>גובה ס״מ</label><input id="height" inputmode="decimal" placeholder="174"></div>
+                    <div><label>יעד משקל ק״ג</label><input id="goalWeight" inputmode="decimal" placeholder="78"></div>
+                </div>
+                <div class="grid2">
+                    <div><label>מין</label><select id="gender">
+                            <option value="male">גבר</option>
+                            <option value="female">אישה</option>
+                        </select></div>
+                    <div><label>פעילות</label><select id="activity">
+                            <option value="1.2">יושבני</option>
+                            <option value="1.375">קל</option>
+                            <option value="1.55">בינוני</option>
+                            <option value="1.725">גבוה</option>
+                        </select></div>
+                </div>
+                <label>מטרה</label><select id="goal">
+                    <option value="cut">ירידה מתונה</option>
+                    <option value="maintain">שמירה</option>
+                    <option value="bulk">עלייה מבוקרת</option>
+                </select>
+                <button onclick="saveProfile()">חשב ושמור יעדים</button>
+                <div id="profileResult" class="notice"></div>
+            </div>
+            <div class="card">
+                <h2>סגנון מאמן 📣</h2>
+                <label>בחר סגנון פידבקים</label>
+                <select id="coachStyle" onchange="st.profile.coach=this.value;save();render()">
+                    <option value="רגיל">רגיל (ענייני)</option>
+                    <option value="אירה">אירה המאמנת (ישראלוף)</option>
+                    <option value="רסר">רס״ר צבאי</option>
+                    <option value="גס">גס ועוקצני (זהירות)</option>
+                    <option value="משפטים">משפטי חוכמה ומוטיבציה</option>
+                </select>
+            </div>
+            <div class="card">
+                <h2>🇮🇱 מאגר משרד הבריאות</h2>
+                <div class="small" style="margin-bottom:10px">האפליקציה תמשוך ותשמור כ-4,500 מאכלים ממאגר MABAT הרשמי. זה
+                    מתבצע פעם אחת כדי לאפשר חיפוש אופליין ללא הגבלה.</div>
+                <button id="mabatBtn" onclick="fetchMabat()">סנכרן מאגר (MABAT)</button>
+            </div>
+            <div class="card">
+                <h2>🧠 חיבור לבינה מלאכותית (AI)</h2>
+                <div class="small" style="margin-bottom:10px">כדי לצלם אוכל ולקבל מתכונים, הוסף מפתח Google Gemini API
+                    חינמי. <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:#3730a3">לחץ
+                        כאן ליצירת מפתח</a>.</div>
+                <div class="notice">חדש: הקלטה קולית מחוברת ל-Gemini. כשיש API Key, האפליקציה מפרקת משפט כמו "חלב 3% כוס ואורז 100" ובוחרת מאכלים מהמאגר.</div>
+                <input id="geminiApi" type="password" placeholder="הדבק מפתח API כאן..."
+                    oninput="st.profile.gemini=this.value;save()">
+            </div>
+            <div class="card">
+                <h2>🔐 התחברות וסנכרון Firebase</h2>
+                <div class="small">התחברות שומרת את הנתונים בענן לפי משתמש ומסנכרנת בין מחשב לאייפון.</div>
+                <div class="grid2">
+                    <div><label>אימייל</label><input id="loginEmail" type="email" placeholder="your@email.com"></div>
+                    <div><label>סיסמה</label><input id="loginPassword" type="password" placeholder="לפחות 6 תווים"></div>
+                </div>
+                <div class="grid3">
+                    <button onclick="loginUser(loginEmail.value,loginPassword.value)">התחברות</button>
+                    <button class="greenbtn" onclick="registerUser(loginEmail.value,loginPassword.value)">הרשמה</button>
+                    <button class="mutedbtn" onclick="logoutUser()">התנתקות</button>
+                </div>
+                <div id="authStatus" class="notice">לא מחובר</div>
+            </div>
+        </section>
+
+        <section id="pToday" class="page">
+            <div id="recipeBox" class="card hide" style="background:#f3e8ff; border:2px solid #a855f7">
+                <h2 style="color:#7e22ce">👨‍🍳 מתכון מותאם אישית (AI)</h2>
+                <div id="recipeContent"
+                    style="white-space:pre-wrap; font-size:14px; line-height:1.5; margin-bottom:10px;"></div>
+                <button onclick="document.getElementById('recipeBox').classList.add('hide')"
+                    style="background:#a855f7">סגור</button>
+            </div>
+            <div class="card">
+                <h2>🚦 רמזור יומי</h2>
+                <div id="traffic" class="traffic"></div>
+                <div id="coach" class="notice"></div>
+                <button onclick="document.getElementById('aiRecipe').click()"
+                    style="margin-top:10px; background:#8b5cf6">👨‍🍳 מה לאכול עכשיו? (AI צילום)</button>
+                <input type="file" id="aiRecipe" accept="image/*" capture="environment" class="hide"
+                    onchange="uploadImage(event, true)">
+            </div>
+            <div class="card">
+                <h2>📊 סטטוס מקרו</h2>
+                <div id="progress"></div>
+            </div>
+            <div class="card">
+                <h2>🍽️ התפלגות ארוחות</h2>
+                <div id="mealBreakdown"></div>
+            </div>
+            <div class="card">
+                <h2>💧 שתייה</h2>
+                <div class="row"><span>מים ונוזלים</span><span id="waterText"></span></div>
+                <div class="bar">
+                    <div id="waterFill" class="fill"></div>
+                </div>
+                <div class="grid3"><button onclick="addWater(200)">+200</button><button
+                        onclick="addWater(250)">+250</button><button onclick="addWater(500)">+500</button></div>
+            </div>
+        </section>
+
+        <section id="pFood" class="page">
+            <div class="card">
+                <h2>🥗 הוספת אוכל</h2>
+                <label>שיוך ארוחה</label>
+                <div class="chiprow" style="margin-bottom:15px; border-bottom:1px solid var(--b); padding-bottom:10px">
+                    <button class="chip meal-chip on" onclick="setMeal('בוקר',this)">בוקר</button>
+                    <button class="chip meal-chip" onclick="setMeal('צהריים',this)">צהריים</button>
+                    <button class="chip meal-chip" onclick="setMeal('ערב',this)">ערב</button>
+                    <button class="chip meal-chip" onclick="setMeal('ביניים',this)">ביניים</button>
+                    <button class="chip meal-chip" onclick="setMeal('לילה',this)">לילה</button>
+                </div>
+                <label>הזנה מהירה (הקלדה / קולי / צילום AI)</label>
+                <div class="quick">
+                    <div class="suggest"><input id="quick" oninput="suggest()"
+                            placeholder="אורז 100 טונה 96 חצי כפית שמן">
+                        <div id="sbox" class="suggestbox hide"></div>
+                    </div>
+                    <button id="mic" class="mic" onclick="voice()" title="הקלדה קולית">🎙️</button>
+                    <button id="camBtn" class="mic" onclick="document.getElementById('aiCamera').click()"
+                        title="צילום חכם AI">📷</button>
+                    <input type="file" id="aiCamera" accept="image/*" capture="environment" class="hide"
+                        onchange="uploadImage(event, false)">
+                </div>
+                <div class="grid2"><button onclick="addQuick()">הוסף</button><button style="background:#6b7280"
+                        onclick="quick.value='';msg('',0);sbox.classList.add('hide')">נקה</button></div>
+                <div id="msg" class="notice hide"></div>
+                <div id="chips" class="chiprow"></div>
+            </div>
+            <div class="card">
+                <h2>⭐ ארוחות קבועות</h2>
+                <div class="grid2">
+                    <button class="greenbtn" onclick="addFixedMeal('breakfast')">בוקר קבוע</button>
+                    <button class="greenbtn" onclick="addFixedMeal('lunch')">צהריים קבוע</button>
+                </div>
+                <div class="grid2">
+                    <button class="orangebtn" onclick="saveFixedMeal()">שמור 4 רשומות אחרונות כקבוע</button>
+                    <button class="mutedbtn" onclick="clearFixedMeals()">אפס קבועות</button>
+                </div>
+                <div id="fixedMealsBox" class="notice"></div>
+            </div>
+            <div class="card">
+                <h2>↩️ אכלתי לאחרונה</h2>
+                <div id="recentBox"></div>
+            </div>
+            <div class="card">
+                <h2>✍️ מאכל ידני</h2>
+                <div class="grid2">
+                    <div><label>שם</label><input id="mName"></div>
+                    <div><label>כמות גרם/מ״ל</label><input id="mAmount" value="100" inputmode="decimal"></div>
+                </div>
+                <div class="grid2">
+                    <div><label>קלוריות ל-100</label><input id="mCal" value="0" inputmode="decimal"></div>
+                    <div><label>חלבון ל-100</label><input id="mPro" value="0" inputmode="decimal"></div>
+                </div>
+                <div class="grid2">
+                    <div><label>פחמימה ל-100</label><input id="mCarb" value="0" inputmode="decimal"></div>
+                    <div><label>שומן ל-100</label><input id="mFat" value="0" inputmode="decimal"></div>
+                </div><label>ירקות ל-100</label><input id="mVeg" value="0" inputmode="decimal"><button
+                    onclick="addManual()">שמור ידני</button>
+            </div>
+        </section>
+
+        <section id="pWorkout" class="page">
+            <div class="card">
+                <h2>🏋️ אימון</h2>
+                <div class="grid2">
+                    <div><label>סוג</label><select id="wType">
+                            <option value="walk">הליכה</option>
+                            <option value="strength">כוח</option>
+                            <option value="bike">אופניים</option>
+                            <option value="other">אחר</option>
+                        </select></div>
+                    <div><label>דקות</label><input id="wMin" value="20" inputmode="decimal"></div>
+                </div><label>עצימות</label><select id="wInt">
+                    <option value="light">קל</option>
+                    <option value="medium" selected>בינוני</option>
+                    <option value="hard">קשה</option>
+                </select><button onclick="addWorkout()">שמור אימון</button>
+                <div class="notice">קלוריות מאימון הן הערכה בלבד. לא מומלץ “לאכול בחזרה” את כל הקלוריות.</div>
+            </div>
+            <div class="card">
+                <h2>אימוני היום</h2>
+                <div id="workouts"></div>
+            </div>
+        </section>
+
+        <section id="pTrack" class="page">
+            <div class="card">
+                <h2>👣 צעדים היום</h2>
+                <div class="grid2" style="align-items:end">
+                    <div><label>כמות צעדים (הוספה)</label><input id="trackSteps" type="number" inputmode="numeric"
+                            placeholder="למשל: 3000"></div>
+                    <button onclick="addSteps()" style="margin-bottom:2px">שמור צעדים</button>
+                </div>
+                <div class="row" style="margin-top:10px"><span>סה״כ היום:</span><b id="stepsDisp"
+                        style="color:var(--blue);font-size:18px">0</b></div>
+            </div>
+            <div class="card">
+                <h2>⚖️ מעקב שקילות</h2>
+                <div class="grid2">
+                    <div><label>תאריך</label><input id="trackDate" type="date"></div>
+                    <div><label>משקל (ק״ג)</label><input id="trackWeight" type="number" inputmode="decimal"></div>
+                </div>
+                <button onclick="addWeight()" style="margin-top:8px">הוסף שקילה</button>
+                <div id="weightsList" style="margin-top:15px"></div>
+            </div>
+            <div class="card">
+                <h2>👩‍⚕️ ביקור דיאטנית</h2>
+                <label>סיכום / המלצות</label>
+                <textarea id="trackDiet" rows="3"
+                    placeholder="למשל: להוסיף חלבון בערב, לשתות מים לפני ארוחה..."></textarea>
+                <button onclick="addDiet()" style="margin-top:8px">שמור רשומה</button>
+                <div id="dietList" style="margin-top:15px"></div>
+            </div>
+        </section>
+
+        <section id="pLog" class="page">
+            <div class="card">
+                <h2>🧾 יומן</h2><button style="background:#ef4444" onclick="resetDay()">איפוס יום</button>
+                <div id="entries"></div>
+            </div>
+        </section>
     </div>
+    <nav><button id="tProfile" class="on" onclick="show('Profile')"><span class="ico">👤</span>פרופיל</button><button
+            id="tToday" onclick="show('Today')"><span class="ico">🏠</span>היום</button><button id="tFood"
+            onclick="show('Food')"><span class="ico">➕</span>אוכל</button><button id="tWorkout"
+            onclick="show('Workout')"><span class="ico">🏋️</span>אימון</button><button id="tTrack"
+            onclick="show('Track')"><span class="ico">📈</span>מעקב</button><button id="tLog"
+            onclick="show('Log')"><span class="ico">🧾</span>יומן</button></nav>
+    <script>
+        const KEY = 'healthy_life_v_full_profile';
+        const base = { profile: { age: 63, weight: 83.5, height: 174, goalWeight: 78, gender: 'male', activity: 1.375, goal: 'cut', saved: false, coach: 'רגיל' }, targets: { calories: 1750, protein: 95, carbs: 170, fat: 55, veg: 500, water: 2400 }, water: 0, steps: 0, entries: [], workouts: [], currentMeal: 'בוקר', weights: [], dietitian: [], recent: [], fixedMeals: {} };
+        function setMeal(m, el) { st.currentMeal = m; document.querySelectorAll('.meal-chip').forEach(c => c.classList.remove('on')); el.classList.add('on'); save(); }
+        const foods = [
+            { name: 'אורז מבושל', a: ['אורז', 'אורז לבן', 'אורז בסמטי'], u: 'g', cal: 130, p: 2.7, c: 28, f: .3, v: 0, w: 0 }, { name: 'אורז מלא מבושל', a: ['אורז מלא'], u: 'g', cal: 111, p: 2.6, c: 23, f: .9, v: 0, w: 0 }, { name: 'פסטה מבושלת', a: ['פסטה', 'ספגטי'], u: 'g', cal: 158, p: 5.8, c: 31, f: .9, v: 0, w: 0 }, { name: 'פתיתים מבושלים', a: ['פתיתים'], u: 'g', cal: 170, p: 5, c: 35, f: 1, v: 0, w: 0 }, { name: 'קוסקוס מבושל', a: ['קוסקוס'], u: 'g', cal: 112, p: 3.8, c: 23, f: .2, v: 0, w: 0 }, { name: 'בורגול מבושל', a: ['בורגול'], u: 'g', cal: 83, p: 3.1, c: 18.6, f: .2, v: 0, w: 0 }, { name: 'קינואה מבושלת', a: ['קינואה'], u: 'g', cal: 120, p: 4.4, c: 21.3, f: 1.9, v: 0, w: 0 }, { name: 'תפוח אדמה מבושל', a: ['תפוח אדמה', 'תפוא', 'תפוחי אדמה'], u: 'g', cal: 87, p: 1.9, c: 20, f: .1, v: 0, w: 0 }, { name: 'בטטה אפויה', a: ['בטטה'], u: 'g', cal: 90, p: 2, c: 21, f: .2, v: 0, w: 0 }, { name: 'לחם לבן', a: ['לחם', 'פרוסה', 'פרוסת לחם', 'לחם לבן'], u: 'g', cal: 260, p: 9, c: 49, f: 3.2, v: 0, w: 0 }, { name: 'לחם מלא', a: ['לחם מלא', 'פרוסת לחם מלא'], u: 'g', cal: 247, p: 13, c: 41, f: 4.2, v: 0, w: 0 }, { name: 'פיתה', a: ['פיתה'], u: 'g', cal: 275, p: 9, c: 56, f: 1.2, v: 0, w: 0 }, { name: 'לאפה', a: ['לאפה'], u: 'g', cal: 300, p: 9, c: 55, f: 5, v: 0, w: 0 }, { name: 'שיבולת שועל', a: ['שיבולת שועל', 'קוואקר'], u: 'g', cal: 389, p: 16.9, c: 66.3, f: 6.9, v: 0, w: 0 }, { name: 'קורנפלקס רגיל', a: ['קורנפלקס'], u: 'g', cal: 370, p: 7, c: 84, f: 1, v: 0, w: 0 }, { name: 'גרנולה', a: ['גרנולה'], u: 'g', cal: 450, p: 10, c: 64, f: 17, v: 0, w: 0 },
+            { name: 'טונה בשמן מסוננת', a: ['טונה', 'טונה בשמן', 'טונה מסוננת'], u: 'g', cal: 140, p: 25, c: 0, f: 5, v: 0, w: 0 }, { name: 'טונה במים', a: ['טונה במים'], u: 'g', cal: 116, p: 26, c: 0, f: 1, v: 0, w: 0 }, { name: 'חזה עוף מבושל', a: ['חזה עוף', 'עוף', 'חזה'], u: 'g', cal: 165, p: 31, c: 0, f: 3.6, v: 0, w: 0 }, { name: 'פרגית', a: ['פרגית'], u: 'g', cal: 190, p: 24, c: 0, f: 10, v: 0, w: 0 }, { name: 'קציצות עוף', a: ['קציצת עוף', 'קציצות עוף'], u: 'g', cal: 170, p: 18, c: 8, f: 7, v: 0, w: 0 }, { name: 'בקר טחון 10%', a: ['בשר טחון', 'בקר טחון'], u: 'g', cal: 217, p: 26, c: 0, f: 12, v: 0, w: 0 }, { name: 'קבב', a: ['קבב'], u: 'g', cal: 230, p: 18, c: 3, f: 16, v: 0, w: 0 }, { name: 'סלמון', a: ['סלמון', 'דג סלמון'], u: 'g', cal: 208, p: 20, c: 0, f: 13, v: 0, w: 0 }, { name: 'דג לבן', a: ['דג', 'אמנון', 'מושט', 'דג לבן'], u: 'g', cal: 120, p: 22, c: 0, f: 3, v: 0, w: 0 }, { name: 'ביצה', a: ['ביצה', 'ביצים'], u: 'g', cal: 155, p: 13, c: 1.1, f: 11, v: 0, w: 0 }, { name: 'חלבון ביצה', a: ['חלבון ביצה', 'לבן ביצה'], u: 'g', cal: 52, p: 11, c: .7, f: .2, v: 0, w: 0 }, { name: 'קוטג׳ 5%', a: ['קוטג', 'קוטג׳', 'קוטג 5', 'קוטג׳ 5'], u: 'g', cal: 97, p: 11, c: 2.5, f: 5, v: 0, w: 0 }, { name: 'גבינה לבנה 5%', a: ['גבינה לבנה', 'גבינה 5'], u: 'g', cal: 95, p: 9.5, c: 3.5, f: 5, v: 0, w: 0 }, { name: 'יוגורט יווני', a: ['יוגורט', 'יוגורט יווני'], u: 'g', cal: 90, p: 10, c: 4, f: 3, v: 0, w: 0 }, { name: 'סקיר', a: ['סקיר'], u: 'g', cal: 65, p: 11, c: 4, f: .2, v: 0, w: 0 }, { name: 'טופו', a: ['טופו'], u: 'g', cal: 144, p: 15, c: 3, f: 8, v: 0, w: 0 },
+            { name: 'חומוס מבושל', a: ['חומוס גרגרים', 'גרגירי חומוס'], u: 'g', cal: 164, p: 8.9, c: 27.4, f: 2.6, v: 0, w: 0 }, { name: 'חומוס ממרח', a: ['חומוס', 'חומוס טחינה', 'ממרח חומוס'], u: 'g', cal: 250, p: 8, c: 18, f: 17, v: 0, w: 0 }, { name: 'עדשים מבושלות', a: ['עדשים'], u: 'g', cal: 116, p: 9, c: 20, f: .4, v: 0, w: 0 }, { name: 'שעועית לבנה מבושלת', a: ['שעועית לבנה'], u: 'g', cal: 139, p: 8.7, c: 25, f: .5, v: 0, w: 0 }, { name: 'אפונה מבושלת', a: ['אפונה'], u: 'g', cal: 84, p: 5.4, c: 15, f: .4, v: 50, w: 0 },
+            { name: 'שעועית ירוקה', a: ['שעועית', 'שעועים', 'שעועית ירוקה'], u: 'g', cal: 35, p: 2, c: 7, f: .2, v: 100, w: 0 }, { name: 'מלפפון', a: ['מלפפון', 'מלפפונים'], u: 'g', cal: 15, p: .7, c: 3.6, f: .1, v: 100, w: 0 }, { name: 'עגבניות שרי', a: ['שרי', 'עגבניות שרי', 'עגבניה', 'עגבניות'], u: 'g', cal: 18, p: .9, c: 3.9, f: .2, v: 100, w: 0 }, { name: 'חסה', a: ['חסה'], u: 'g', cal: 15, p: 1.4, c: 2.9, f: .2, v: 100, w: 0 }, { name: 'כרוב', a: ['כרוב'], u: 'g', cal: 25, p: 1.3, c: 5.8, f: .1, v: 100, w: 0 }, { name: 'גזר', a: ['גזר'], u: 'g', cal: 41, p: .9, c: 10, f: .2, v: 100, w: 0 }, { name: 'פלפל', a: ['פלפל', 'פלפל אדום', 'גמבה'], u: 'g', cal: 31, p: 1, c: 6, f: .3, v: 100, w: 0 }, { name: 'בצל', a: ['בצל'], u: 'g', cal: 40, p: 1.1, c: 9.3, f: .1, v: 100, w: 0 }, { name: 'קישוא', a: ['קישוא', 'זוקיני'], u: 'g', cal: 17, p: 1.2, c: 3.1, f: .3, v: 100, w: 0 }, { name: 'ברוקולי', a: ['ברוקולי'], u: 'g', cal: 34, p: 2.8, c: 6.6, f: .4, v: 100, w: 0 }, { name: 'כרובית', a: ['כרובית'], u: 'g', cal: 25, p: 1.9, c: 5, f: .3, v: 100, w: 0 }, { name: 'סלט ירקות', a: ['סלט', 'סלט ירקות'], u: 'g', cal: 25, p: 1, c: 5, f: .2, v: 100, w: 0 },
+            { name: 'שמן זית', a: ['שמן', 'שמן זית'], u: 'g', cal: 884, p: 0, c: 0, f: 100, v: 0, w: 0 }, { name: 'טחינה מוכנה', a: ['טחינה', 'טחינה מוכנה'], u: 'g', cal: 250, p: 7, c: 6, f: 22, v: 0, w: 0 }, { name: 'אבוקדו', a: ['אבוקדו'], u: 'g', cal: 160, p: 2, c: 8.5, f: 14.7, v: 0, w: 0 }, { name: 'אגוזים', a: ['אגוזים', 'שקדים', 'אגוזי מלך'], u: 'g', cal: 600, p: 20, c: 20, f: 52, v: 0, w: 0 }, { name: 'חמאת בוטנים', a: ['חמאת בוטנים'], u: 'g', cal: 588, p: 25, c: 20, f: 50, v: 0, w: 0 },
+            { name: 'פרי ממוצע', a: ['פרי'], u: 'g', cal: 55, p: .3, c: 14, f: .2, v: 0, w: 0 }, { name: 'תפוח', a: ['תפוח'], u: 'g', cal: 52, p: .3, c: 14, f: .2, v: 0, w: 0 }, { name: 'בננה', a: ['בננה'], u: 'g', cal: 89, p: 1.1, c: 23, f: .3, v: 0, w: 0 }, { name: 'תפוז', a: ['תפוז'], u: 'g', cal: 47, p: .9, c: 12, f: .1, v: 0, w: 0 }, { name: 'ענבים', a: ['ענבים'], u: 'g', cal: 69, p: .7, c: 18, f: .2, v: 0, w: 0 }, { name: 'ריבה', a: ['ריבה', 'ריבת תאנים'], u: 'g', cal: 260, p: .3, c: 65, f: 0, v: 0, w: 0 }, { name: 'דבש', a: ['דבש'], u: 'g', cal: 304, p: .3, c: 82, f: 0, v: 0, w: 0 },
+            { name: 'מים', a: ['מים', 'כוס מים'], u: 'ml', cal: 0, p: 0, c: 0, f: 0, v: 0, w: 100 }, { name: 'תה ללא סוכר', a: ['תה', 'תה ירוק', 'תה צמחים'], u: 'ml', cal: 2, p: 0, c: 0, f: 0, v: 0, w: 100 }, { name: 'קפה שחור', a: ['קפה שחור', 'נס קפה'], u: 'ml', cal: 2, p: 0, c: 0, f: 0, v: 0, w: 100 }, { name: 'קפוצ׳ינו דקפ חצי מים חצי חלב 1%', a: ['קפוצינו', 'קפוצ׳ינו', 'קפה', 'קפה דקפ', 'קפוצינו דקפ'], u: 'ml', cal: 25, p: 1.8, c: 2.4, f: .5, v: 0, w: 100 }, { name: 'חלב 3%', a: ['חלב 3', 'חלב 3%', 'חלב שלוש אחוז'], u: 'ml', cal: 61, p: 3.3, c: 4.7, f: 3, v: 0, w: 90 }, { name: 'חלב 1%', a: ['חלב', 'חלב 1'], u: 'ml', cal: 42, p: 3.4, c: 5, f: 1, v: 0, w: 100 }, { name: 'קולה זירו', a: ['קולה זירו', 'זירו', 'דיאט קולה'], u: 'ml', cal: 1, p: 0, c: 0, f: 0, v: 0, w: 100 }
+        ];
+        let st = load(), mabatDB = [], rec = null, recording = false, currentUser = null, saveTimer = null;
+        try { mabatDB = JSON.parse(localStorage.getItem('healthy_life_mabat') || '[]'); } catch { mabatDB = []; }
+st.recent = st.recent || []; st.fixedMeals = st.fixedMeals || {}; st.profile = {...base.profile, ...(st.profile||{})};
+        function load() { try { return { ...base, ...JSON.parse(localStorage.getItem(KEY) || '{}') } } catch { return JSON.parse(JSON.stringify(base)) } } function save() { localStorage.setItem(KEY, JSON.stringify(st)); if(window.cloudSave) window.cloudSave(); } function n(x) { let v = Number(String(x || '').replace(',', '.')); return isFinite(v) ? v : 0 } function r(x) { return Math.round(n(x) * 10) / 10 }
 
-    <div class="card">
-      <h2>🔐 התחברות וסנכרון</h2>
-      <div class="small">התחברות עם Firebase. בשלב הבא נחבר סנכרון מלא של הנתונים בין מכשירים.</div>
-      <div class="grid2">
-        <div>
-          <label>אימייל</label>
-          <input id="loginEmail" type="email" placeholder="your@email.com">
-        </div>
-        <div>
-          <label>סיסמה</label>
-          <input id="loginPassword" type="password" placeholder="לפחות 6 תווים">
-        </div>
-      </div>
-      <div class="grid3">
-        <button onclick="registerUser(loginEmail.value, loginPassword.value)">הרשמה</button>
-        <button class="greenbtn" onclick="loginUser(loginEmail.value, loginPassword.value)">התחברות</button>
-        <button class="mutedbtn" onclick="logoutUser()">התנתקות</button>
-      </div>
-      <div id="authStatus" class="notice">לא מחובר</div>
-    </div>
+        async function fetchMabat() {
+            let btn = document.getElementById('mabatBtn');
+            btn.textContent = 'מוריד נתונים (יכול לקחת דקה)...';
+            btn.disabled = true;
+            try {
+                let res = await fetch('https://data.gov.il/api/3/action/datastore_search?resource_id=c3cb0630-0650-46c1-a068-82d575c094b2&limit=4500');
+                let data = await res.json();
+                mabatDB = data.result.records.slice(0,4500).map(r => {
+                    let cname = clean(r.shmmitzrach);
+                    let rev = cname.split(' ').reverse().join(' ');
+                    return {
+                        name: r.shmmitzrach.replace(/"/g, ''),
+                        a: [cname, rev],
+                        u: 'g',
+                        cal: n(r.food_energy), p: n(r.protein), c: n(r.carbohydrates), f: n(r.total_fat), v: n(r.total_dietary_fiber), w: n(r.moisture)
+                    }
+                });
+                localStorage.setItem('healthy_life_mabat', JSON.stringify(mabatDB));
+                btn.textContent = `המאגר מסונכרן (${mabatDB.length} מתוך יעד 4,500 פריטים)`;
+                msg('מאגר MABAT סונכרן בהצלחה!', 'ok');
+            } catch (e) {
+                btn.textContent = 'שגיאה בהורדה - נסה שוב';
+                msg('שגיאה בהתחברות למשרד הבריאות.', 'err');
+                console.error(e);
+            }
+            btn.disabled = false;
+        }
+        function show(p) { ['Profile', 'Today', 'Food', 'Workout', 'Track', 'Log'].forEach(x => { document.getElementById('p' + x).classList.toggle('on', x == p); document.getElementById('t' + x).classList.toggle('on', x == p) }) }
+        function calcProfile(p) { let b = p.gender == 'male' ? 10 * p.weight + 6.25 * p.height - 5 * p.age + 5 : 10 * p.weight + 6.25 * p.height - 5 * p.age - 161; let cal = b * p.activity; if (p.goal == 'cut') cal -= 400; if (p.goal == 'bulk') cal += 250; let protein = Math.round(p.weight * (p.goal == 'cut' ? 1.6 : 1.3)); let fat = Math.round(p.weight * .75); let carbs = Math.max(80, Math.round((cal - protein * 4 - fat * 9) / 4)); return { bmr: Math.round(b), cal: Math.round(cal), protein, fat, carbs } }
+        function saveProfile() { st.profile = { age: n(age.value), weight: n(weight.value), height: n(height.value), goalWeight: n(goalWeight.value), gender: gender.value, activity: n(activity.value), goal: goal.value, saved: true }; let x = calcProfile(st.profile); st.targets = { calories: x.cal, protein: x.protein, carbs: x.carbs, fat: x.fat, veg: 500, water: Math.round(Math.min(2800, Math.max(2000, st.profile.weight * 30))) }; profileResult.innerHTML = `BMR: ${x.bmr}<br>יעד קלוריות: ${x.cal}<br>חלבון ${x.protein}ג׳ | פחמימה ${x.carbs}ג׳ | שומן ${x.fat}ג׳`; save(); render(); show('Today') }
+        function totals() { let t = { cal: 0, p: 0, c: 0, f: 0, v: 0, w: st.water, burn: 0 }; st.entries.forEach(e => { t.cal += e.cal; t.p += e.p; t.c += e.c; t.f += e.f; t.v += e.v; t.w += e.w }); st.workouts.forEach(w => t.burn += w.cal); return t }
+        function prog(name, used, target, unit, cls = '') { let pct = Math.min(100, used / Math.max(target, 1) * 100), over = used > target; return `<div class=row><span>${name}</span><span style="color:${over ? '#ef4444' : 'inherit'}">${Math.round(used)} / ${Math.round(target)} ${unit}</span></div><div class=bar><div class="fill ${over ? 'red' : cls}" style="width:${pct}%"></div></div>` }
+        function render() { date.textContent = new Date().toLocaleDateString('he-IL', { weekday: 'long', day: 'numeric', month: 'long' }); let p = st.profile; age.value = p.age; weight.value = p.weight; height.value = p.height; goalWeight.value = p.goalWeight; gender.value = p.gender; activity.value = p.activity; goal.value = p.goal; if (p.saved) { let x = calcProfile(p); profileResult.innerHTML = `BMR: ${x.bmr}<br>יעד קלוריות: ${x.cal}<br>חלבון ${x.protein}ג׳ | פחמימה ${x.carbs}ג׳ | שומן ${x.fat}ג׳` } let t = totals(), g = st.targets; progress.innerHTML = prog('קלוריות', t.cal, g.calories, 'קק״ל', 'yellow') + prog('חלבון', t.p, g.protein, 'ג׳', 'green') + prog('פחמימה', t.c, g.carbs, 'ג׳', 'purple') + prog('שומן', t.f, g.fat, 'ג׳') + prog('ירקות', t.v, g.veg, 'ג׳', 'green') + prog('שתייה', t.w, g.water, 'מ״ל') + prog('אימון', t.burn, 250, 'קק״ל', 'yellow'); waterText.textContent = `${Math.round(t.w)} / ${g.water} מ״ל`; waterFill.style.width = Math.min(100, t.w / g.water * 100) + '%'; traffic.innerHTML = ['calories', 'protein', 'carbs', 'fat', 'veg', 'water'].map(k => light(k, t, g)).join(''); coach.textContent = coachMsg(t, g, p); let meals = { 'בוקר': { cal: 0, p: 0 }, 'צהריים': { cal: 0, p: 0 }, 'ערב': { cal: 0, p: 0 }, 'ביניים': { cal: 0, p: 0 }, 'לילה': { cal: 0, p: 0 } }; st.entries.forEach(e => { let m = e.meal || 'בוקר'; if (meals[m]) { meals[m].cal += e.cal; meals[m].p += e.p; } }); let mHtml = ''; for (let m in meals) { if (meals[m].cal > 0) { let pct = Math.min(100, meals[m].cal / Math.max(g.calories, 1) * 100); mHtml += `<div class=row style="margin-top:12px;margin-bottom:2px"><span>${m}</span><b>${Math.round(meals[m].cal)} קק״ל</b></div><div class=small style="margin-bottom:6px">חלבון: ${Math.round(meals[m].p)} ג׳</div><div class=bar style="height:6px"><div class="fill" style="width:${pct}%"></div></div>`; } } if (!mHtml) mHtml = '<div class=notice>עדיין לא הוזן אוכל היום.</div>'; document.getElementById('mealBreakdown').innerHTML = mHtml; entries.innerHTML = st.entries.length ? st.entries.map(e => `<div class=entry><div><b>${e.name}</b> <span class="small" style="background:#eef2ff;color:#3730a3;padding:2px 6px;border-radius:6px;font-size:11px">${e.meal || 'בוקר'}</span><div class=small>${e.amount}${e.unit == 'ml' ? ' מ״ל' : ' ג׳'} | ${Math.round(e.cal)} קק״ל | חלבון ${r(e.p)} | פחמימה ${r(e.c)} | שומן ${r(e.f)} | ירק ${Math.round(e.v)} | מים ${Math.round(e.w)}</div></div><button class=del onclick="delE(${e.id})">מחק</button></div>`).join('') : '<div class=notice>אין רשומות</div>'; workouts.innerHTML = st.workouts.length ? st.workouts.map(w => `<div class=entry><div><b>${w.name}</b><div class=small>${w.min} דקות | ${Math.round(w.cal)} קק״ל</div></div><button class=del onclick="delW(${w.id})">מחק</button></div>`).join('') : '<div class=notice>אין אימונים</div>'; chips.innerHTML = foods.slice(0, 18).map(f => `<button class=chip onclick="quick.value+=' ${f.a[0]} ';quick.focus()">${f.a[0]}</button>`).join(''); document.querySelectorAll('.meal-chip').forEach(c => c.classList.toggle('on', c.textContent === (st.currentMeal || 'בוקר'))); if (document.getElementById('coachStyle')) document.getElementById('coachStyle').value = p.coach || 'רגיל'; renderRecent(); renderFixed(); document.getElementById('stepsDisp').textContent = st.steps || 0; document.getElementById('weightsList').innerHTML = (st.weights || []).length ? st.weights.map((x, i) => `<div class=entry><div><b>${new Date(x.d).toLocaleDateString('he-IL')}</b> <span>${x.w} ק״ג</span></div><button class=del onclick="delWeight(${i})">מחק</button></div>`).join('') : '<div class=small>אין שקילות.</div>'; document.getElementById('dietList').innerHTML = (st.dietitian || []).length ? st.dietitian.map((x, i) => `<div class=entry style="flex-direction:column;align-items:start;gap:5px;width:100%"><b>${x.d}</b><div class=small style="white-space:pre-wrap;line-height:1.4">${x.txt}</div><button class=del style="align-self:end" onclick="delDiet(${i})">מחק</button></div>`).join('') : '<div class=small>אין רשומות דיאטנית.</div>'; save() }
+        function light(k, t, g) { let map = { calories: ['קלוריות', t.cal, g.calories], protein: ['חלבון', t.p, g.protein], carbs: ['פחמימה', t.c, g.carbs], fat: ['שומן', t.f, g.fat], veg: ['ירקות', t.v, g.veg], water: ['מים', t.w, g.water] }; let [name, u, target] = map[k], ratio = u / target, dot = '🟢', txt = 'טוב'; if (['calories', 'carbs', 'fat'].includes(k)) { if (ratio > .105 && false) { } if (ratio > 1.05) { dot = '🔴'; txt = 'חריגה' } else if (ratio > .9) { dot = '🟡'; txt = 'גבולי' } } else { if (ratio < .6) { dot = '🔴'; txt = 'חסר' } else if (ratio < .9) { dot = '🟡'; txt = 'להשלים' } } return `<div class=light><b>${name} ${dot}</b><div class=small>${txt} | ${Math.round(u)} / ${Math.round(target)}</div></div>` }
+        const quotes = { 'אירה': { over: ['הופ הופ הופ יש לנו פה דובי! תבלע רוק מספיק להיום!', 'ממי, ראיתי מה אכלת עכשיו. עוד ביס אחד ואת/ה מתגלגל/ת מכאן.', 'אכלת יפה? עכשיו תסגור ת׳פה! חריגה רצינית!'], underPro: ['איפה החלבון שלך חמודי? אתה רוצה שהשרירים יימסו?', 'בלי חלבון אין תוצאות! קדימה לטרוף קוטג׳!'], good: ['מגיע לך מחיאת כף! עמדת ביעד כמו גדול/ה!', 'אלופה! מי יורד במשקל מי?!', 'יפה מאוד חמודי, תמשיך ככה!'], water: ['תשתה מים!! הגוף שלך יבש כמו הנגב!', 'מים מים מים!'] }, 'רסר': { over: ['20 שניות התגלגלת מהכורסה להליכה של 40 דקות! זוז!', 'מי אישר לך חריגה בקלוריות?! אתה מרותק למקרר ריק!', 'די להכניס לפה! פתח שעון, רד ל-50 שכיבות סמיכה!'], underPro: ['השרירים שלך בוכים! חסר חלבון במערכת! לאשר קבלת פקודה לאכול עוף!', 'חלבון חסר! קדימה להשלים או שאתה רץ סביב הבסיס!'], good: ['חייל! ביצועים תקינים! המשך בשגרת תזונה!', 'היום עמדת במשימה. מחר דורש יותר!', 'מצב תקין, אין חריגות. מחר השכמה למד״ס!'], water: ['מימייה מלאה פתח! אתה מיובש! תשתה מיד!'] }, 'גס': { over: ['יא שמן! מה זה הכמויות האלה? עשית חור בכיסא!', 'תפסיק לטחון יא חזיר! חרגת ברמות!', 'נראה לי התבלבלת, זה יומן תזונה, לא יומן השמנה! יא ג׳לי!', 'סגור תמקרר יא דובון אכפת לי!'], underPro: ['איך יגדל השריר עם תזונה של ציפור? תאכל חלבון!', 'אין לך מספיק חלבון אפילו בשביל להרים את השלט של הטלוויזיה.'], good: ['בסדר יא רזה, היום לא הגזמת. נראה אותך מחר.', 'וואלה סחטיין. פעם ראשונה שאתה לא בולס. תמשיך!'], water: ['שתה מים יא מתייבש, העור שלך נראה כמו קרפדה.'] }, 'משפטים': { all: ['קלוריות שורפים, לא סופרים.', 'אורח חיים זה לא דיאטה, זו בחירה יומיומית.', 'לא משמינים ממה שלא אוכלים, ולא מרזים מיום אחד.', 'הדרך חשובה יותר מהשקילה בבוקר.', 'הגוף שלך הוא המקדש שלך, תן לו דלק איכותי.', 'הזעה זה השומן שבוכה.', 'דיאטה קצרת טווח מביאה תוצאות קצרות טווח.', 'אל תחפש תירוצים, תחפש תוצאות.', 'כוח רצון הוא כמו שריר, תאמן אותו.', 'שינויים קטנים היום שווים תוצאות גדולות מחר.', 'אין קיצורי דרך למקום ששווה להגיע אליו.', 'התזונה היא 80% מההצלחה.', 'ארוחה גרועה אחת לא תהרוס, כמו שארוחה טובה אחת לא תתקן.', 'שתה כוס מים לפני כל החלטה.', 'אתה לא רעב, אתה רק משועמם.', 'לחזור לכושר זה קשה, להיות שמן זה קשה - תבחר את ה"קשה" שלך.', 'ההשקעה הכי טובה שלך היא בעצמך.', 'תהיה חזק יותר מהתירוץ הכי טוב שלך.', 'היום זה "מחר" שאמרת עליו אתמול.', 'עוף זה ציפור, פרה זה חיה, וספורט זה בריאות!', 'אתה לא הכלב שלך, אל תתגמל את עצמך עם אוכל.', 'אם אתה עייף מלהתחיל מחדש, תפסיק לוותר.', 'כל יום הוא דף חלק, תכתוב עליו משהו טוב.'] }, 'רגיל': { over: ['חריגה בקלוריות. מומלץ לאזן בארוחה הבאה עם חלבון רזה וירקות.', 'עברת את התקציב הקלורי היומי.'], underPro: ['חסר חלבון. בארוחה הבאה הוסף טונה, עוף, יוגורט או קוטג׳.', 'כמות החלבון נמוכה מהיעד.'], good: ['יום מאוזן. המשך כך!', 'מצוין, אתה עומד ביעדים להיום.', 'יחס מקרו טוב, עבודה יפה.'], water: ['שתייה נמוכה. מומלץ להשלים נוזלים בשעות הקרובות.'] } };
+        function coachMsg(t, g, p) { let style = p.coach || 'רגיל'; let q = quotes[style] || quotes['רגיל']; let rnd = arr => arr[Math.floor(Math.random() * arr.length)]; if (style === 'משפטים') return rnd(q.all); if (t.cal > g.calories * 1.05) return rnd(q.over); if (t.w < g.water * 0.5) return rnd(q.water); if (t.p < g.protein * 0.6) return rnd(q.underPro); return rnd(q.good); }
+        function rememberRecent(e) {
+            let item = { name: e.name, amount: e.amount, unit: e.unit || 'g' };
+            st.recent = [item, ...(st.recent || []).filter(x => x.name !== item.name)].slice(0, 12);
+        }
+        function renderRecent() {
+            let box = document.getElementById('recentBox');
+            if(!box) return;
+            box.innerHTML = (st.recent && st.recent.length)
+                ? st.recent.map(x => `<button class="mini-btn" onclick="quick.value+=' ${x.name} ${Math.round(x.amount)} ';show('Food')">${x.name} ${Math.round(x.amount)}</button>`).join('')
+                : '<div class="notice">אין עדיין היסטוריה.</div>';
+        }
+        function saveFixedMeal() {
+            let last = st.entries.slice(0, 4);
+            if(!last.length){ alert('אין ארוחה לשמור'); return; }
+            let key = confirm('לשמור כארוחת בוקר? לחץ ביטול לשמור כצהריים') ? 'breakfast' : 'lunch';
+            st.fixedMeals = st.fixedMeals || {};
+            st.fixedMeals[key] = last.map(e => ({ name:e.name, amount:e.amount }));
+            save(); render(); alert('נשמר');
+        }
+        function addFixedMeal(key) {
+            let meal = st.fixedMeals && st.fixedMeals[key];
+            if(!meal || !meal.length){ alert('אין ארוחה קבועה שמורה'); return; }
+            meal.forEach(x => { let f=findFood(x.name); if(f) addEntry(f, x.amount); });
+            render();
+        }
+        function clearFixedMeals() {
+            if(confirm('לאפס ארוחות קבועות?')){ st.fixedMeals = {}; save(); render(); }
+        }
+        function renderFixed() {
+            let box = document.getElementById('fixedMealsBox');
+            if(!box) return;
+            let b = st.fixedMeals?.breakfast?.map(x=>x.name+' '+Math.round(x.amount)).join(', ') || 'לא נשמר';
+            let l = st.fixedMeals?.lunch?.map(x=>x.name+' '+Math.round(x.amount)).join(', ') || 'לא נשמר';
+            box.textContent = 'בוקר: '+b+'\nצהריים: '+l;
+        }
+        function addWater(x) { st.water += x; render() } function delE(id) { st.entries = st.entries.filter(e => e.id != id); render() } function delW(id) { st.workouts = st.workouts.filter(e => e.id != id); render() } function resetDay() { if (confirm('לאפס יום?')) { st.water = 0; st.steps = 0; st.entries = []; st.workouts = []; render() } }
+        function addSteps() { let s = n(trackSteps.value); if (s > 0) { st.steps = (st.steps || 0) + s; trackSteps.value = ''; save(); render(); msg('צעדים נוספו!', 'ok'); } }
+        function addWeight() { let d = trackDate.value, w = n(trackWeight.value); if (d && w > 0) { st.weights.push({ d, w }); st.weights.sort((a, b) => new Date(b.d) - new Date(a.d)); trackWeight.value = ''; save(); render(); msg('שקילה נשמרה', 'ok'); } }
+        function delWeight(i) { st.weights.splice(i, 1); save(); render(); }
+        function addDiet() { let txt = trackDiet.value; if (txt) { st.dietitian.unshift({ d: new Date().toLocaleDateString('he-IL'), txt }); trackDiet.value = ''; save(); render(); msg('רשומה נשמרה', 'ok'); } }
+        function delDiet(i) { st.dietitian.splice(i, 1); save(); render(); }
+        function clean(w) { return String(w || '').replace(/[׳']/g, '').replace(/[״".,:;!?()]/g, '').toLowerCase().trim() }
+        function findFood(w) {
+            w = clean(w);
+            let words = w.split(' ');
+            let f = foods.find(f => f.a.some(a => clean(a) == w || clean(a).includes(w) || w.includes(clean(a))));
+            if (f) return f;
+            if (mabatDB.length) {
+                return mabatDB.find(f => f.a.some(a => words.every(word => a.includes(word))));
+            }
+            return null;
+        }
+        const stop = new Set(['גרם', 'גרמים', 'מיל', 'מל', 'מ״ל', 'טוב', 'של', 'בערך', 'עם', 'ועם', 'אכלתי', 'שתיתי', 'את', 'ו']);
+        function heb(text) { let toks = text.replace(/[-.,]/g, ' ').split(/\s+/).filter(Boolean), out = []; for (let i = 0; i < toks.length; i++) { let res = parseNum(toks, i); if (res) { out.push(String(res.val)); i = res.next - 1 } else out.push(toks[i]) } return out.join(' ') } function parseNum(t, i) { const u = { אחד: 1, אחת: 1, שניים: 2, שתיים: 2, שלוש: 3, ארבע: 4, חמש: 5, שש: 6, שבע: 7, שמונה: 8, תשע: 9 }, te = { עשר: 10, עשרים: 20, שלושים: 30, ארבעים: 40, חמישים: 50, שישים: 60, שבעים: 70, שמונים: 80, תשעים: 90 }, h = { מאה: 100, מאתיים: 200 }; let c = x => clean(x).replace(/^ו/, ''); let x = c(t[i]), sum = 0; if (x == 'חצי') return { val: .5, next: i + 1 }; if (h[x]) { sum += h[x]; i++; x = c(t[i] || ''); if (te[x]) { sum += te[x]; i++; if (u[c(t[i] || '')]) { sum += u[c(t[i])]; i++ } } else if (u[x]) { sum += u[x]; i++ } return { val: sum, next: i } } if (te[x]) { sum += te[x]; i++; if (u[c(t[i] || '')]) { sum += u[c(t[i])]; i++ } return { val: sum, next: i } } if (u[x]) return { val: u[x], next: i + 1 }; return null }
+        function norm(txt) { return heb(txt).split(/\s+/).map(clean).filter(x => x && !stop.has(x)).join(' ') }
+        const UNITS = { 'כפית': 5, 'כפיות': 5, 'כף': 15, 'כפות': 15, 'כוס': 240, 'כוסות': 240 };
+        function addQuick() { let txt = norm(quick.value); let tok = txt.split(/\s+/).filter(Boolean); let parsed = []; for (let i = 0; i < tok.length; i++) { let n = Number(tok[i]); if (!isNaN(n)) { let mult = 1, unit = null; if (i + 1 < tok.length && UNITS[tok[i + 1]]) { mult = UNITS[tok[i + 1]]; unit = tok[i + 1]; i++; } parsed.push({ type: 'num', val: n * mult, hasUnit: !!unit, unit: unit }); } else { parsed.push({ type: 'word', val: tok[i] }); } } let groups = []; let curWords = []; for (let p of parsed) { if (p.type === 'word') { curWords.push(p.val); } else { if (curWords.length) { groups.push({ type: 'food', val: curWords.join(' ') }); curWords = []; } groups.push(p); } } if (curWords.length) groups.push({ type: 'food', val: curWords.join(' ') }); for (let i = 0; i < groups.length; i++) { if (groups[i].type === 'num') { let left = (i - 1 >= 0 && groups[i - 1].type === 'food') ? groups[i - 1] : null; let right = (i + 1 < groups.length && groups[i + 1].type === 'food') ? groups[i + 1] : null; if (left && right) { if (groups[i].hasUnit && groups[i].unit !== 'גרם') right.amt = groups[i].val; else left.amt = groups[i].val; } else if (left) left.amt = groups[i].val; else if (right) right.amt = groups[i].val; } } let added = [], bad = []; for (let g of groups) { if (g.type === 'food') { let f = findFood(g.val); if (f) { let amt = g.amt || 100; addEntry(f, amt); added.push(`${f.name} ${amt}`); } else { bad.push(g.val); } } } if (added.length) { msg('נוסף: ' + added.join(', ') + (bad.length ? '\nלא זוהה: ' + bad.join(', ') : ''), bad.length ? 'err' : 'ok'); quick.value = ''; render(); } else { msg('לא זוהה. נסה: עוף 150 וחצי כפית שמן', 'err'); } }
+        function addEntry(f, amt) { let q = amt / 100; let e={ id: Date.now() + Math.random(), name: f.name, amount: amt, unit: f.u, cal: f.cal * q, p: f.p * q, c: f.c * q, f: f.f * q, v: f.v * q, w: f.w ? amt * f.w / 100 : 0, meal: st.currentMeal || 'בוקר' }; st.entries.unshift(e); rememberRecent(e); save(); } function addManual() { addEntry({ name: mName.value || 'ידני', u: 'g', cal: n(mCal.value), p: n(mPro.value), c: n(mCarb.value), f: n(mFat.value), v: n(mVeg.value), w: 0 }, n(mAmount.value) || 100); render() } function msg(t, type) { if (!t) { document.getElementById('msg').classList.add('hide'); return } document.getElementById('msg').textContent = t; document.getElementById('msg').className = 'notice ' + type }
+        function suggest() {
+            let last = clean(quick.value.split(/\s+/).pop());
+            if (!last || !isNaN(Number(last))) { sbox.classList.add('hide'); return }
+            let m = foods.filter(f => f.a.some(a => clean(a).includes(last)));
+            if (mabatDB.length) m = m.concat(mabatDB.filter(f => f.a.some(a => a.includes(last))));
+            m = m.slice(0, 6);
+            sbox.innerHTML = m.map(f => `<button onclick="pick('${f.a[0]}')">${f.name.substring(0, 25)}</button>`).join('');
+            sbox.classList.toggle('hide', !m.length);
+        }
+        function pick(x) { let p = quick.value.trim().split(/\s+/); p[p.length - 1] = x; quick.value = p.join(' ') + ' '; sbox.classList.add('hide'); quick.focus() }
+        function getFoodCandidatesForAi(text) {
+            let words = norm(text).split(/\s+/).filter(x => x && isNaN(Number(x)));
+            let pool = [...foods, ...(mabatDB || [])];
+            let scored = pool.map(f => {
+                let hay = clean([f.name, ...(f.a || [])].join(' '));
+                let score = words.reduce((s,w)=>s+(hay.includes(w)?1:0),0);
+                return {f, score};
+            }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,80).map(x=>x.f.name);
+            return [...new Set(scored)];
+        }
 
-    <div class="card"><h2>📲 התקנה כאפליקציה</h2><div class="small">אחרי העלאה ל-Netlify/שרת HTTPS: באנדרואיד יופיע Install app. באייפון פתח בספארי ואז Share → Add to Home Screen.</div><button id="installBtn" class="greenbtn hide">התקן כאפליקציה</button></div>
-  </section>
+        async function callGeminiVoice(transcript) {
+            let key = st.profile.gemini;
+            if (!key) throw new Error('missing-gemini-key');
 
-  <section id="pToday" class="page">
-    <div class="card dark-card"><h2>🤖 מאמן יומי</h2><div id="coach" class="small"></div></div>
-    <div class="card"><h2>🚦 רמזור יומי</h2><div id="traffic" class="traffic"></div></div>
-    <div class="card"><h2>📊 סטטוס יומי</h2><div id="progress"></div></div>
-    <div class="card"><h2>🍽️ חלוקת ארוחות</h2><div id="mealBreakdown"></div></div>
-    <div class="card"><h2>💧 שתייה</h2><div class="row"><span>מים ונוזלים</span><span id="waterText"></span></div><div class="bar"><div id="waterFill" class="fill"></div></div><div class="grid3"><button onclick="addWater(200)">+200</button><button onclick="addWater(250)">+250</button><button onclick="addWater(500)">+500</button></div></div>
-  </section>
+            let candidates = getFoodCandidatesForAi(transcript);
+            let prompt =
+`אתה מנוע פירוק תזונה בעברית.
+המשתמש אמר בקול: "${transcript}"
 
-  <section id="pFood" class="page">
-    <div class="card"><h2>🥗 הוספת אוכל</h2>
-      <label>שיוך ארוחה</label><div class="chiprow" id="mealChips"></div>
-      <label>הזנה מהירה, קולית או לפי כמות</label>
-      <div class="quick"><div class="suggest"><input id="quick" oninput="suggest()" placeholder="אורז 100 טונה 96 כף טחינה"><div id="sbox" class="suggestbox hide"></div></div><button id="mic" class="mic" onclick="voice()">🎙️</button><button class="mic" onclick="quick.value='';msg('',0);sbox.classList.add('hide')">🧹</button></div>
-      <button onclick="addQuick()">הוסף</button><div id="msg" class="notice hide"></div><div id="chips" class="chiprow"></div>
-    </div>
-    <div class="card"><h2>⭐ ארוחות קבועות</h2><div class="grid2"><button class="greenbtn" onclick="addFixedMeal('breakfast')">בוקר קבוע</button><button class="greenbtn" onclick="addFixedMeal('lunch')">צהריים קבוע</button></div><div class="grid2"><button class="orangebtn" onclick="saveFixedMeal()">שמור 4 רשומות אחרונות כקבוע</button><button class="mutedbtn" onclick="clearFixedMeals()">אפס קבועות</button></div><div id="fixedMealsBox" class="notice"></div></div>
-    <div class="card"><h2>↩️ אכלתי לאחרונה</h2><div id="recentBox"></div></div>
-    <div class="card"><h2>✍️ מאכל ידני</h2><div class="grid2"><div><label>שם</label><input id="mName"></div><div><label>כמות גרם/מ״ל</label><input id="mAmount" value="100" inputmode="decimal"></div></div><div class="grid2"><div><label>קלוריות ל-100</label><input id="mCal" value="0" inputmode="decimal"></div><div><label>חלבון ל-100</label><input id="mPro" value="0" inputmode="decimal"></div></div><div class="grid2"><div><label>פחמימה ל-100</label><input id="mCarb" value="0" inputmode="decimal"></div><div><label>שומן ל-100</label><input id="mFat" value="0" inputmode="decimal"></div></div><label>ירקות ל-100</label><input id="mVeg" value="0" inputmode="decimal"><button onclick="addManual()">שמור ידני</button></div>
-  </section>
+בחר מאכלים מתוך רשימת המועמדים בלבד אם אפשר:
+${candidates.join(', ')}
 
-  <section id="pPhoto" class="page">
-    <div class="card"><h2>📷 בדיקת צלחת מתמונה</h2><div class="small">אין פה שרת AI. מעלים תמונה, מזינים הערכה, והאפליקציה מחשבת וממליצה.</div><input type="file" accept="image/*" capture="environment" onchange="previewPhoto(event)"><img id="photoPrev" class="preview hide"><div class="grid2"><div><label>פחמימה גרם</label><input id="phCarb" value="100" inputmode="decimal"></div><div><label>חלבון גרם</label><input id="phPro" value="100" inputmode="decimal"></div></div><div class="grid2"><div><label>ירקות גרם</label><input id="phVeg" value="150" inputmode="decimal"></div><div><label>שומן/רוטב גרם</label><input id="phFat" value="10" inputmode="decimal"></div></div><button onclick="savePhotoMeal()">שמור צלחת משוערת</button><div id="photoAdvice" class="notice"></div></div>
-  </section>
+החזר JSON חוקי בלבד, בלי הסברים ובלי markdown:
+[
+  {"name":"שם מאכל מתוך הרשימה או שם ברור בעברית","amount":100,"unit":"g"}
+]
 
-  <section id="pData" class="page">
-    <div class="card"><h2>🇮🇱 מאגר מזון ישראלי</h2><div class="small">העלה CSV ממשרד הבריאות/data.gov.il. החיפוש והקול יתעדפו מאגר זה.</div><input id="csvFile" type="file" accept=".csv,.txt" onchange="loadCsv(event)"><div id="csvStatus" class="notice">כרגע נטענים: <b id="dbCount"></b> פריטים.</div><button class="mutedbtn" onclick="clearExternalDb()">מחק מאגר חיצוני</button></div>
-    <div class="card"><h2>🔎 חיפוש במאגר</h2><input id="dbSearch" oninput="searchDb()" placeholder="לדוגמה: חלב, לחם, עוף"><div id="dbResults"></div></div>
-  </section>
+כללים:
+- אם נאמר "חלב 3%" בחר חלב 3%.
+- אם נאמר "אורז" הצע אורז מבושל אלא אם נאמר מלא/בסמטי.
+- אם נאמר כוס חלב, amount=240 ו unit="ml".
+- אם נאמר כפית שמן, amount=5.
+- אם נאמר כף שמן, amount=15.
+- אם אין כמות, amount=100.
+- אם יש כמה מאכלים, החזר כמה אובייקטים.`;
 
-  <section id="pWorkout" class="page"><div class="card"><h2>🏋️ אימון</h2><div class="grid2"><div><label>סוג</label><select id="wType"><option value="walk">הליכה</option><option value="strength">כוח</option><option value="bike">אופניים</option><option value="other">אחר</option></select></div><div><label>דקות</label><input id="wMin" value="20" inputmode="decimal"></div></div><label>עצימות</label><select id="wInt"><option value="light">קל</option><option value="medium" selected>בינוני</option><option value="hard">קשה</option></select><button onclick="addWorkout()">שמור אימון</button><div class="notice">קלוריות מאימון הן הערכה בלבד. עדיף לא לאכול בחזרה את כולן.</div></div><div class="card"><h2>אימוני היום</h2><div id="workouts"></div></div></section>
+            let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+            });
+            let data = await res.json();
+            if (data.error) throw new Error(data.error.message);
 
-  <section id="pBackup" class="page"><div class="card"><h2>💾 גיבוי וסנכרון ידני</h2><button onclick="exportData()">ייצא נתונים לקובץ</button><label>ייבוא קובץ גיבוי</label><input type="file" accept=".json" onchange="importData(event)"><button class="redbtn" onclick="resetDay()">איפוס יום</button><button class="redbtn" onclick="clearAllData()">מחיקת כל הנתונים</button></div><div class="card"><h2>🧾 יומן</h2><div id="entries"></div></div></section>
-</div>
+            let text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+            let json = text.replace(/```json/g, '').replace(/```/g, '').trim();
+            let arr = JSON.parse(json);
+            if (!Array.isArray(arr)) arr = [arr];
 
-<nav>
-<button id="tProfile" class="on" onclick="show('Profile')"><span class="ico">👤</span>פרופיל</button><button id="tToday" onclick="show('Today')"><span class="ico">🏠</span>היום</button><button id="tFood" onclick="show('Food')"><span class="ico">➕</span>אוכל</button><button id="tPhoto" onclick="show('Photo')"><span class="ico">📷</span>תמונה</button><button id="tData" onclick="show('Data')"><span class="ico">🇮🇱</span>מאגר</button><button id="tWorkout" onclick="show('Workout')"><span class="ico">🏋️</span>אימון</button><button id="tBackup" onclick="show('Backup')"><span class="ico">💾</span>גיבוי</button>
-</nav>
+            let added = [], missing = [];
+            arr.forEach(x => {
+                let f = findFood(x.name);
+                if (!f) {
+                    let m = getFoodCandidatesForAi(x.name)[0];
+                    if (m) f = findFood(m);
+                }
+                if (f) {
+                    let amt = Number(x.amount) || 100;
+                    addEntry(f, amt);
+                    added.push(`${f.name} ${amt}${x.unit === 'ml' ? ' מ״ל' : ' ג׳'}`);
+                } else {
+                    missing.push(x.name);
+                }
+            });
 
-<script>
-const KEY='healthy_life_v7_pwa'; const DBKEY='healthy_life_external_food_db_v7';
-const base={profile:{age:63,weight:83.5,height:174,goalWeight:78,gender:'male',activity:1.375,goal:'cut',tone:'normal',saved:false},targets:{calories:1750,protein:95,carbs:170,fat:55,veg:500,water:2400},water:0,entries:[],workouts:[],externalDb:[],recent:[],fixedMeals:{},meal:'בוקר'};
-const localFoods=[
-{name:'אורז מבושל',a:['אורז','אורז לבן','אורז בסמטי'],u:'g',cal:130,p:2.7,c:28,f:.3,v:0,w:0,src:'מקומי'},
-{name:'פסטה מבושלת',a:['פסטה','ספגטי'],u:'g',cal:158,p:5.8,c:31,f:.9,v:0,w:0,src:'מקומי'},
-{name:'קוסקוס מבושל',a:['קוסקוס'],u:'g',cal:112,p:3.8,c:23,f:.2,v:0,w:0,src:'מקומי'},
-{name:'קינואה מבושלת',a:['קינואה'],u:'g',cal:120,p:4.4,c:21.3,f:1.9,v:0,w:0,src:'מקומי'},
-{name:'תפוח אדמה',a:['תפוח אדמה','תפוא'],u:'g',cal:87,p:1.9,c:20,f:.1,v:0,w:0,src:'מקומי'},
-{name:'בטטה',a:['בטטה'],u:'g',cal:90,p:2,c:21,f:.2,v:0,w:0,src:'מקומי'},
-{name:'לחם לבן',a:['לחם','פרוסה','פרוסת לחם'],u:'g',cal:260,p:9,c:49,f:3.2,v:0,w:0,src:'מקומי'},
-{name:'לחם מלא',a:['לחם מלא'],u:'g',cal:247,p:13,c:41,f:4.2,v:0,w:0,src:'מקומי'},
-{name:'פיתה',a:['פיתה'],u:'g',cal:275,p:9,c:56,f:1.2,v:0,w:0,src:'מקומי'},
-{name:'שיבולת שועל',a:['שיבולת שועל','קוואקר'],u:'g',cal:389,p:16.9,c:66.3,f:6.9,v:0,w:0,src:'מקומי'},
-{name:'טונה בשמן מסוננת',a:['טונה','טונה בשמן','טונה מסוננת'],u:'g',cal:140,p:25,c:0,f:5,v:0,w:0,src:'מקומי'},
-{name:'טונה במים',a:['טונה במים'],u:'g',cal:116,p:26,c:0,f:1,v:0,w:0,src:'מקומי'},
-{name:'חזה עוף',a:['חזה עוף','עוף','חזה'],u:'g',cal:165,p:31,c:0,f:3.6,v:0,w:0,src:'מקומי'},
-{name:'פרגית',a:['פרגית'],u:'g',cal:190,p:24,c:0,f:10,v:0,w:0,src:'מקומי'},
-{name:'קבב',a:['קבב'],u:'g',cal:230,p:18,c:3,f:16,v:0,w:0,src:'מקומי'},
-{name:'סלמון',a:['סלמון'],u:'g',cal:208,p:20,c:0,f:13,v:0,w:0,src:'מקומי'},
-{name:'דג לבן',a:['דג','אמנון','מושט'],u:'g',cal:120,p:22,c:0,f:3,v:0,w:0,src:'מקומי'},
-{name:'ביצה',a:['ביצה','ביצים'],u:'g',cal:155,p:13,c:1.1,f:11,v:0,w:0,src:'מקומי'},
-{name:'קוטג׳ 5%',a:['קוטג','קוטג׳'],u:'g',cal:97,p:11,c:2.5,f:5,v:0,w:0,src:'מקומי'},
-{name:'יוגורט יווני',a:['יוגורט','יוגורט יווני'],u:'g',cal:90,p:10,c:4,f:3,v:0,w:0,src:'מקומי'},
-{name:'חומוס ממרח',a:['חומוס','חומוס טחינה'],u:'g',cal:250,p:8,c:18,f:17,v:0,w:0,src:'מקומי'},
-{name:'עדשים מבושלות',a:['עדשים'],u:'g',cal:116,p:9,c:20,f:.4,v:0,w:0,src:'מקומי'},
-{name:'שעועית ירוקה',a:['שעועית','שעועים','שעועית ירוקה'],u:'g',cal:35,p:2,c:7,f:.2,v:100,w:0,src:'מקומי'},
-{name:'מלפפון',a:['מלפפון','מלפפונים'],u:'g',cal:15,p:.7,c:3.6,f:.1,v:100,w:0,src:'מקומי'},
-{name:'עגבניות שרי',a:['שרי','עגבניות','עגבניה'],u:'g',cal:18,p:.9,c:3.9,f:.2,v:100,w:0,src:'מקומי'},
-{name:'חסה',a:['חסה'],u:'g',cal:15,p:1.4,c:2.9,f:.2,v:100,w:0,src:'מקומי'},
-{name:'גזר',a:['גזר'],u:'g',cal:41,p:.9,c:10,f:.2,v:100,w:0,src:'מקומי'},
-{name:'פלפל',a:['פלפל','גמבה'],u:'g',cal:31,p:1,c:6,f:.3,v:100,w:0,src:'מקומי'},
-{name:'קישוא',a:['קישוא'],u:'g',cal:17,p:1.2,c:3.1,f:.3,v:100,w:0,src:'מקומי'},
-{name:'ברוקולי',a:['ברוקולי'],u:'g',cal:34,p:2.8,c:6.6,f:.4,v:100,w:0,src:'מקומי'},
-{name:'סלט ירקות',a:['סלט','סלט ירקות'],u:'g',cal:25,p:1,c:5,f:.2,v:100,w:0,src:'מקומי'},
-{name:'שמן זית',a:['שמן','שמן זית'],u:'g',cal:884,p:0,c:0,f:100,v:0,w:0,src:'מקומי'},
-{name:'טחינה מוכנה',a:['טחינה'],u:'g',cal:250,p:7,c:6,f:22,v:0,w:0,src:'מקומי'},
-{name:'אבוקדו',a:['אבוקדו'],u:'g',cal:160,p:2,c:8.5,f:14.7,v:0,w:0,src:'מקומי'},
-{name:'אגוזים',a:['אגוזים','שקדים'],u:'g',cal:600,p:20,c:20,f:52,v:0,w:0,src:'מקומי'},
-{name:'תפוח',a:['תפוח'],u:'g',cal:52,p:.3,c:14,f:.2,v:0,w:0,src:'מקומי'},
-{name:'בננה',a:['בננה'],u:'g',cal:89,p:1.1,c:23,f:.3,v:0,w:0,src:'מקומי'},
-{name:'ריבה',a:['ריבה','ריבת תאנים'],u:'g',cal:260,p:.3,c:65,f:0,v:0,w:0,src:'מקומי'},
-{name:'דבש',a:['דבש'],u:'g',cal:304,p:.3,c:82,f:0,v:0,w:0,src:'מקומי'},
-{name:'מים',a:['מים','כוס מים'],u:'ml',cal:0,p:0,c:0,f:0,v:0,w:100,src:'מקומי'},
-{name:'תה',a:['תה','תה ירוק'],u:'ml',cal:2,p:0,c:0,f:0,v:0,w:100,src:'מקומי'},
-{name:'קפה שחור',a:['קפה שחור','נס קפה'],u:'ml',cal:2,p:0,c:0,f:0,v:0,w:100,src:'מקומי'},
-{name:'קפוצ׳ינו דקפ',a:['קפוצינו','קפוצ׳ינו','קפה','קפה דקפ'],u:'ml',cal:25,p:1.8,c:2.4,f:.5,v:0,w:100,src:'מקומי'},
-{name:'חלב 1%',a:['חלב','חלב 1'],u:'ml',cal:42,p:3.4,c:5,f:1,v:0,w:100,src:'מקומי'},
-{name:'קולה זירו',a:['קולה זירו','זירו'],u:'ml',cal:1,p:0,c:0,f:0,v:0,w:100,src:'מקומי'}];
-let st=load(), rec=null, recording=false, deferredPrompt=null;
-function load(){try{let s={...base,...JSON.parse(localStorage.getItem(KEY)||'{}')};s.externalDb=JSON.parse(localStorage.getItem(DBKEY)||'[]');return s}catch{return JSON.parse(JSON.stringify(base))}}
-function save(){localStorage.setItem(KEY,JSON.stringify({...st,externalDb:[]}));localStorage.setItem(DBKEY,JSON.stringify(st.externalDb||[]))}
-function allFoods(){return [...(st.externalDb||[]),...localFoods]} function n(x){let v=Number(String(x||'').replace(',','.'));return isFinite(v)?v:0} function r(x){return Math.round(n(x)*10)/10}
-function show(p){['Profile','Today','Food','Photo','Data','Workout','Backup'].forEach(x=>{document.getElementById('p'+x).classList.toggle('on',x==p);document.getElementById('t'+x).classList.toggle('on',x==p)})}
-function calcProfile(p){let b=p.gender=='male'?10*p.weight+6.25*p.height-5*p.age+5:10*p.weight+6.25*p.height-5*p.age-161;let cal=b*p.activity;if(p.goal=='cut')cal-=400;if(p.goal=='bulk')cal+=250;let protein=Math.round(p.weight*(p.goal=='cut'?1.6:1.3));let fat=Math.round(p.weight*.75);let carbs=Math.max(80,Math.round((cal-protein*4-fat*9)/4));return{bmr:Math.round(b),cal:Math.round(cal),protein,fat,carbs}}
-function saveProfile(){st.profile={age:n(age.value),weight:n(weight.value),height:n(height.value),goalWeight:n(goalWeight.value),gender:gender.value,activity:n(activity.value),goal:goal.value,tone:tone.value,saved:true};let x=calcProfile(st.profile);st.targets={calories:x.cal,protein:x.protein,carbs:x.carbs,fat:x.fat,veg:500,water:Math.round(Math.min(2800,Math.max(2000,st.profile.weight*30)))};profileResult.innerHTML=`BMR: ${x.bmr}<br>יעד קלוריות: ${x.cal}<br>חלבון ${x.protein}ג׳ | פחמימה ${x.carbs}ג׳ | שומן ${x.fat}ג׳`;save();render();show('Today')}
-function totals(){let t={cal:0,p:0,c:0,f:0,v:0,w:st.water,burn:0};st.entries.forEach(e=>{t.cal+=e.cal;t.p+=e.p;t.c+=e.c;t.f+=e.f;t.v+=e.v;t.w+=e.w});st.workouts.forEach(w=>t.burn+=w.cal);return t}
-function prog(name,used,target,unit,cls=''){let pct=Math.min(100,used/Math.max(target,1)*100),over=used>target;return `<div class=row><span>${name}</span><span style="color:${over?'#ef4444':'inherit'}">${Math.round(used)} / ${Math.round(target)} ${unit}</span></div><div class=bar><div class="fill ${over?'red':cls}" style="width:${pct}%"></div></div>`}
-function render(){date.textContent=new Date().toLocaleDateString('he-IL',{weekday:'long',day:'numeric',month:'long'});let p=st.profile;age.value=p.age;weight.value=p.weight;height.value=p.height;goalWeight.value=p.goalWeight;gender.value=p.gender;activity.value=p.activity;goal.value=p.goal;tone.value=p.tone||'normal';if(p.saved){let x=calcProfile(p);profileResult.innerHTML=`BMR: ${x.bmr}<br>יעד קלוריות: ${x.cal}<br>חלבון ${x.protein}ג׳ | פחמימה ${x.carbs}ג׳ | שומן ${x.fat}ג׳`}let t=totals(),g=st.targets;progress.innerHTML=prog('קלוריות',t.cal,g.calories,'קק״ל','yellow')+prog('חלבון',t.p,g.protein,'ג׳','green')+prog('פחמימה',t.c,g.carbs,'ג׳','purple')+prog('שומן',t.f,g.fat,'ג׳')+prog('ירקות',t.v,g.veg,'ג׳','green')+prog('שתייה',t.w,g.water,'מ״ל')+prog('אימון',t.burn,250,'קק״ל','yellow');waterText.textContent=`${Math.round(t.w)} / ${g.water} מ״ל`;waterFill.style.width=Math.min(100,t.w/g.water*100)+'%';traffic.innerHTML=['calories','protein','carbs','fat','veg','water'].map(k=>light(k,t,g)).join('');coach.innerHTML=coachMsg(t,g);renderMealBreakdown(t,g);entries.innerHTML=st.entries.length?st.entries.map(e=>`<div class=entry><div><b>${e.name}</b> <span class=badge>${e.meal||'כללי'}</span> <span class=badge>${e.src||''}</span><div class=small>${Math.round(e.amount)}${e.unit=='ml'?' מ״ל':' ג׳'} | ${Math.round(e.cal)} קק״ל | חלבון ${r(e.p)} | פחמימה ${r(e.c)} | שומן ${r(e.f)} | ירק ${Math.round(e.v)} | מים ${Math.round(e.w)}</div></div><button class=del onclick="delE(${e.id})">מחק</button></div>`).join(''):'<div class=notice>אין רשומות</div>';workouts.innerHTML=st.workouts.length?st.workouts.map(w=>`<div class=entry><div><b>${w.name}</b><div class=small>${w.min} דקות | ${Math.round(w.cal)} קק״ל</div></div><button class=del onclick="delW(${w.id})">מחק</button></div>`).join(''):'<div class=notice>אין אימונים</div>';chips.innerHTML=allFoods().slice(0,18).map(f=>`<button class=chip onclick="quick.value+=' ${f.a[0]} ';quick.focus()">${f.a[0]}</button>`).join('');dbCount.textContent=allFoods().length;renderMealChips();renderRecent();renderFixed();save()}
-function renderMealChips(){let meals=['בוקר','צהריים','ערב','ביניים','לילה'];mealChips.innerHTML=meals.map(m=>`<button class="chip ${st.meal==m?'active':''}" onclick="st.meal='${m}';render()">${m}</button>`).join('')}
-function renderMealBreakdown(t,g){let meals={};st.entries.forEach(e=>{let m=e.meal||'כללי';meals[m]=meals[m]||{cal:0,p:0};meals[m].cal+=e.cal;meals[m].p+=e.p});let html=Object.keys(meals).map(m=>`<div class=row><span>${m}</span><span>${Math.round(meals[m].cal)} קק״ל | ${Math.round(meals[m].p)} חלבון</span></div><div class=bar><div class=fill style="width:${Math.min(100,meals[m].cal/Math.max(g.calories,1)*100)}%"></div></div>`).join('');mealBreakdown.innerHTML=html||'<div class=notice>עדיין לא הוזן אוכל היום.</div>'}
-function light(k,t,g){let map={calories:['קלוריות',t.cal,g.calories],protein:['חלבון',t.p,g.protein],carbs:['פחמימה',t.c,g.carbs],fat:['שומן',t.f,g.fat],veg:['ירקות',t.v,g.veg],water:['מים',t.w,g.water]};let [name,u,target]=map[k],ratio=u/target,dot='🟢',txt='טוב';if(['calories','carbs','fat'].includes(k)){if(ratio>1.05){dot='🔴';txt='חריגה'}else if(ratio>.9){dot='🟡';txt='גבולי'}}else{if(ratio<.6){dot='🔴';txt='חסר'}else if(ratio<.9){dot='🟡';txt='להשלים'}}return `<div class=light><b>${name} ${dot}</b><div class=small>${txt} | ${Math.round(u)} / ${Math.round(target)}</div></div>`}
-function coachMsg(t,g){let tone=st.profile.tone||'normal';let msg='יום מאוזן. המשך כך.';if(t.cal>g.calories)msg='חריגה בקלוריות. המשך היום: חלבון רזה וירקות.';else if(t.p<g.protein*.6)msg='חסר חלבון. בארוחה הבאה הוסף טונה/עוף/יוגורט/קוטג׳.';else if(t.v<g.veg*.6)msg='חסרים ירקות. הוסף סלט, מלפפון, שעועית או ירק מבושל.';else if(t.w<g.water*.5)msg='שתייה נמוכה. השלם מוקדם, לא בלילה.';if(tone=='military')return '🪖 '+msg.replace('הוסף','בצע השלמה:').replace('יום מאוזן','מצב תקין');if(tone=='funny')return '😄 '+msg.replace('חסר חלבון','הגוף מחפש טונה').replace('חסרים ירקות','הירקות לא הגיעו למסיבה').replace('חריגה בקלוריות','מד הקלוריות צועק הצילו');return msg}
-function addWater(x){st.water+=x;render()}function delE(id){st.entries=st.entries.filter(e=>e.id!=id);render()}function delW(id){st.workouts=st.workouts.filter(e=>e.id!=id);render()}function resetDay(){if(confirm('לאפס יום?')){st.water=0;st.entries=[];st.workouts=[];render()}}
-function clean(w){return String(w||'').replace(/[׳']/g,'').replace(/[״".,:;!?()]/g,'').replace(/גרם|גרמים|גר׳|ג׳|מיל|מ״ל|מל|ml|g/gi,'').toLowerCase().trim()}function dist(a,b){a=clean(a);b=clean(b);if(!a||!b)return 99;let m=[];for(let i=0;i<=b.length;i++)m[i]=[i];for(let j=0;j<=a.length;j++)m[0][j]=j;for(let i=1;i<=b.length;i++)for(let j=1;j<=a.length;j++)m[i][j]=b[i-1]==a[j-1]?m[i-1][j-1]:Math.min(m[i-1][j-1]+1,m[i][j-1]+1,m[i-1][j]+1);return m[b.length][a.length]}
-function foodScore(q,f){q=clean(q);if(!q)return 0;let best=0;for(let a of [f.name,...(f.a||[])].map(clean)){if(a===q)best=Math.max(best,120);else if(a.includes(q)||q.includes(a))best=Math.max(best,95);else{let parts=q.split(/\s+/).filter(Boolean);let s=0;parts.forEach(p=>{if(a.includes(p))s+=22});best=Math.max(best,s);let d=dist(q,a);if(d<=1)best=Math.max(best,70);else if(d<=2&&q.length>3)best=Math.max(best,55);else if(d<=3&&q.length>5)best=Math.max(best,40)}}if(f.src==='משרד הבריאות')best+=8;return best}
-function findFood(w){let list=allFoods().map(f=>({f,score:foodScore(w,f)})).filter(x=>x.score>=40).sort((a,b)=>b.score-a.score);return list.length?list[0].f:null}
-function findBestFoodPhrase(tokens,start){let best=null;for(let len=Math.min(6,tokens.length-start);len>=1;len--){let phrase=tokens.slice(start,start+len).join(' '),f=findFood(phrase);if(f){let score=foodScore(phrase,f);if(!best||score>best.score)best={food:f,len,score}}}return best}
-const stop=new Set(['טוב','של','בערך','עם','ועם','אכלתי','שתיתי','את','ו','עוד','בבקשה','לי','תוסיף','הוסף','מנה','כמות']);function heb(text){let toks=text.replace(/[-.,]/g,' ').split(/\s+/).filter(Boolean),out=[];for(let i=0;i<toks.length;i++){let res=parseNum(toks,i);if(res){out.push(String(res.val));i=res.next-1}else out.push(toks[i])}return out.join(' ')}function parseNum(t,i){const u={אחד:1,אחת:1,שניים:2,שתיים:2,שלוש:3,ארבע:4,חמש:5,שש:6,שבע:7,שמונה:8,תשע:9},te={עשר:10,עשרים:20,שלושים:30,ארבעים:40,חמישים:50,שישים:60,שבעים:70,שמונים:80,תשעים:90},h={מאה:100,מאתיים:200};let c=x=>clean(x).replace(/^ו/,'');let x=c(t[i]),sum=0;if(x=='חצי')return{val:.5,next:i+1};if(h[x]){sum+=h[x];i++;x=c(t[i]||'');if(te[x]){sum+=te[x];i++;if(u[c(t[i]||'')]){sum+=u[c(t[i])];i++}}else if(u[x]){sum+=u[x];i++}return{val:sum,next:i}}if(te[x]){sum+=te[x];i++;if(u[c(t[i]||'')]){sum+=u[c(t[i])];i++}return{val:sum,next:i}}if(u[x])return{val:u[x],next:i+1};return null}
-const UNITS={כפית:5,כפיות:5,כף:15,כפות:15,כוס:240,כוסות:240,פרוסה:40,פרוסות:40,קופסה:96,קופסת:96,יחידה:100,יחידות:100};
-function norm(txt){return heb(txt).replace(/(\d+)\s*(גרם|גרמים|גר׳|ג׳|g|מיל|מ״ל|מל|ml)/gi,'$1').split(/\s+/).map(clean).filter(x=>x&&!stop.has(x)).join(' ')}
-function addQuick(){let tok=norm(quick.value).split(/\s+/).filter(Boolean),added=[],bad=[];for(let i=0;i<tok.length;i++){if(!isNaN(Number(tok[i])))continue;let found=findBestFoodPhrase(tok,i);if(!found){bad.push(tok[i]);continue}let f=found.food,amt=null,after=tok[i+found.len],after2=tok[i+found.len+1],before=tok[i-1],before2=tok[i-2];if(after&&!isNaN(Number(after))){amt=Number(after);if(after2&&UNITS[after2]){amt*=UNITS[after2]} } else if(before&&!isNaN(Number(before)))amt=Number(before);else if(before2&&!isNaN(Number(before2))&&UNITS[before])amt=Number(before2)*UNITS[before];else if(before&&UNITS[before])amt=UNITS[before];if(!amt&&f.u==='ml')amt=200;if(amt){addEntry(f,amt);added.push(`${f.name} ${Math.round(amt)}${f.u==='ml'?' מ״ל':' ג׳'}`);i+=found.len}else{bad.push(tok.slice(i,i+found.len).join(' '));i+=found.len-1}}if(added.length){msg('נוסף: '+added.join(', ')+(bad.length?'\nלא זוהה/חסרה כמות: '+[...new Set(bad)].join(', '):''),bad.length?'err':'ok');quick.value='';render()}else msg('לא זוהה. נסה: אורז 100 טונה 96 / כף טחינה / פרוסה לחם','err')}
-function addEntry(f,amt){let q=amt/100;let entry={id:Date.now()+Math.random(),meal:st.meal,name:f.name,amount:amt,unit:f.u,cal:f.cal*q,p:f.p*q,c:f.c*q,f:f.f*q,v:f.v*q,w:f.w?amt*f.w/100:0,src:f.src||'מקומי'};st.entries.unshift(entry);rememberRecent(entry)}
-function addManual(){addEntry({name:mName.value||'ידני',u:'g',cal:n(mCal.value),p:n(mPro.value),c:n(mCarb.value),f:n(mFat.value),v:n(mVeg.value),w:0,src:'ידני'},n(mAmount.value)||100);render()}function msg(t,type){if(!t){msgEl.classList.add('hide');return}msgEl.textContent=t;msgEl.className='notice '+type} const msgEl=document.getElementById('msg');
-function suggest(){let last=clean(quick.value.split(/\s+/).pop());if(!last||!isNaN(Number(last))){sbox.classList.add('hide');return}let m=allFoods().map(f=>({f,score:foodScore(last,f)})).filter(x=>x.score>=35).sort((a,b)=>b.score-a.score).slice(0,10);sbox.innerHTML=m.map(x=>`<button onclick="pick('${x.f.a[0]}')">${x.f.name} <span class=small>${x.f.src||''}</span></button>`).join('');sbox.classList.toggle('hide',!m.length)}function pick(x){let p=quick.value.trim().split(/\s+/);p[p.length-1]=x;quick.value=p.join(' ')+' ';sbox.classList.add('hide');quick.focus()}
-function voice(){let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){msg('הדפדפן לא תומך בזיהוי קולי. השתמש בהקלדה.','err');return}if(recording){rec.abort();return}rec=new SR();rec.lang='he-IL';rec.interimResults=false;rec.continuous=false;recording=true;mic.classList.add('rec');mic.textContent='⏹️';msg('מקליט... אמור: אורז מאה, טונה תשעים ושש, כף טחינה','');rec.onresult=e=>{let tr=e.results[0][0].transcript;quick.value=norm(tr);msg('זוהה: '+tr+'\nאחרי ניקוי: '+quick.value+'\nמוסיף אוטומטית...','ok');setTimeout(()=>addQuick(),700)};rec.onerror=()=>msg('לא הצלחתי לקלוט קול. נסה לדבר לאט וברור, או הקלד.','err');rec.onend=()=>{recording=false;mic.classList.remove('rec');mic.textContent='🎙️'};rec.start()}
-function addWorkout(){let min=n(wMin.value),type=wType.value,int=wInt.value,base={walk:4,strength:5,bike:6,other:4}[type],mult={light:.75,medium:1,hard:1.25}[int],names={walk:'הליכה',strength:'כוח',bike:'אופניים',other:'אחר'};st.workouts.unshift({id:Date.now(),name:names[type],min,cal:min*base*mult});render()}
-function previewPhoto(e){let f=e.target.files[0];if(!f)return;photoPrev.src=URL.createObjectURL(f);photoPrev.classList.remove('hide');photoAdvice.textContent='תמונה נטענה. הזן הערכת גרמים ולחץ שמור.'}
-function savePhotoMeal(){let carbs=n(phCarb.value),pro=n(phPro.value),veg=n(phVeg.value),fat=n(phFat.value);let cal=carbs*.28*4+pro*.25*4+fat*9+veg*.05*4;st.entries.unshift({id:Date.now()+Math.random(),meal:st.meal,name:'צלחת מתמונה - הערכה',amount:1,unit:'plate',cal,p:pro*.25,c:carbs*.28+veg*.05,f:fat,v:veg,w:0,src:'תמונה'});photoAdvice.textContent='הצלחת נשמרה לפי הערכה. מומלץ לתקן ידנית אם צריך.';render()}
-function parseCsv(text){let rows=[],row=[],cell='',q=false;for(let i=0;i<text.length;i++){let ch=text[i],nx=text[i+1];if(ch=='"'){if(q&&nx=='"'){cell+='"';i++}else q=!q}else if(ch==','&&!q){row.push(cell);cell=''}else if((ch=='\n'||ch=='\r')&&!q){if(cell||row.length){row.push(cell);rows.push(row);row=[];cell=''}if(ch=='\r'&&nx=='\n')i++}else cell+=ch}if(cell||row.length){row.push(cell);rows.push(row)}return rows}
-function colIndex(headers,keys){let hs=headers.map(h=>clean(h));for(let k of keys){let kk=clean(k);let idx=hs.findIndex(h=>h.includes(kk)||kk.includes(h));if(idx>=0)return idx}return -1}
-function loadCsv(e){let file=e.target.files[0];if(!file)return;let reader=new FileReader();reader.onload=()=>{try{let rows=parseCsv(reader.result);let h=rows[0]||[];let nameI=colIndex(h,['shmmitzrach','שם','שם מוצר','product','name']);let calI=colIndex(h,['energy','אנרגיה','קלוריות','kcal','קלוריה','food energy']);let proI=colIndex(h,['protein','חלבון']);let carbI=colIndex(h,['carbohydrate','פחמימות','פחמימה','carbs']);let fatI=colIndex(h,['total lipid','fat','שומן','total fat']);if(nameI<0){csvStatus.className='notice err';csvStatus.textContent='לא מצאתי עמודת שם מזון. בדוק שהקובץ CSV תקין.';return}let arr=[];for(let i=1;i<rows.length;i++){let r=rows[i],name=(r[nameI]||'').trim();if(!name)continue;let aliases=name.split(/[,-]/).map(x=>x.trim()).filter(x=>x.length>1).slice(0,5);arr.push({name,a:[name,...aliases],u:'g',cal:n(r[calI]),p:n(r[proI]),c:n(r[carbI]),f:n(r[fatI]),v:isVegName(name)?100:0,w:0,src:'משרד הבריאות'});}st.externalDb=arr.slice(0,5000);csvStatus.className='notice ok';csvStatus.textContent=`נטענו ${st.externalDb.length} פריטים. החיפוש והקול יתעדפו את המאגר הישראלי.`;render()}catch(err){csvStatus.className='notice err';csvStatus.textContent='שגיאה בקריאת הקובץ: '+err.message}};reader.readAsText(file,'utf-8')}
-function isVegName(name){return /מלפפון|עגבנ|חסה|כרוב|קישוא|גזר|פלפל|ברוקולי|כרובית|שעועית ירוקה|סלט|בצל/.test(name)}function clearExternalDb(){if(confirm('למחוק את המאגר החיצוני?')){st.externalDb=[];localStorage.removeItem(DBKEY);render();csvStatus.textContent='המאגר החיצוני נמחק.'}}
-function searchDb(){let q=clean(dbSearch.value);if(!q){dbResults.innerHTML='';return}let m=allFoods().map(f=>({f,score:foodScore(q,f)})).filter(x=>x.score>=35).sort((a,b)=>b.score-a.score).slice(0,25);dbResults.innerHTML=m.map(x=>`<div class=entry><div><b>${x.f.name}</b> <span class=badge>${x.f.src||''}</span><div class=small>ל-100: ${Math.round(x.f.cal)} קק״ל | חלבון ${r(x.f.p)} | פחמימה ${r(x.f.c)} | שומן ${r(x.f.f)}</div></div><button class=del style="background:#007aff;color:white" onclick="quick.value+=' ${x.f.a[0]} ';show('Food')">בחר</button></div>`).join('')||'<div class=notice>לא נמצאו תוצאות</div>'}
-function rememberRecent(e){let item={name:e.name,amount:e.amount,unit:e.unit,src:e.src};st.recent=[item,...(st.recent||[]).filter(x=>x.name!=item.name)].slice(0,10)}function renderRecent(){recentBox.innerHTML=(st.recent&&st.recent.length)?st.recent.map(x=>`<button class=mini-btn onclick="quick.value+=' ${x.name} ${Math.round(x.amount)} ';show('Food')">${x.name} ${Math.round(x.amount)}</button>`).join(''):'<div class="notice">אין עדיין היסטוריה.</div>'}
-function saveFixedMeal(){let last=st.entries.slice(0,4);if(!last.length){alert('אין ארוחה לשמור');return}let key=confirm('לשמור כארוחת בוקר? לחץ ביטול לשמור כצהריים')?'breakfast':'lunch';st.fixedMeals[key]=last.map(e=>({name:e.name,amount:e.amount}));render();alert('נשמר')}function addFixedMeal(key){let meal=st.fixedMeals&&st.fixedMeals[key];if(!meal||!meal.length){alert('אין ארוחה קבועה שמורה');return}meal.forEach(x=>{let f=findFood(x.name);if(f)addEntry(f,x.amount)});render()}function clearFixedMeals(){if(confirm('לאפס ארוחות קבועות?')){st.fixedMeals={};render()}}function renderFixed(){let b=st.fixedMeals?.breakfast?.map(x=>x.name+' '+x.amount).join(', ')||'לא נשמר';let l=st.fixedMeals?.lunch?.map(x=>x.name+' '+x.amount).join(', ')||'לא נשמר';fixedMealsBox.textContent='בוקר: '+b+'\nצהריים: '+l}
-function exportData(){let data=JSON.stringify(st,null,2);let blob=new Blob([data],{type:'application/json'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='healthy-life-backup.json';a.click()}function importData(e){let f=e.target.files[0];if(!f)return;let reader=new FileReader();reader.onload=()=>{try{st=JSON.parse(reader.result);save();render();alert('הנתונים יובאו בהצלחה')}catch{alert('קובץ לא תקין')}};reader.readAsText(f)}function clearAllData(){if(confirm('למחוק הכל?')){localStorage.removeItem(KEY);localStorage.removeItem(DBKEY);location.reload()}}
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;installBtn.classList.remove('hide')});installBtn.addEventListener('click',async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;installBtn.classList.add('hide')});
-if('serviceWorker' in navigator){navigator.serviceWorker.register('./service-worker.js').catch(()=>{})}
-render();if(st.profile.saved)show('Today');
-</script>
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut,
-    onAuthStateChanged
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+            if (added.length) {
+                quick.value = '';
+                msg('Gemini זיהה והוסיף:\n' + added.join('\n') + (missing.length ? '\nלא נמצא במאגר: ' + missing.join(', ') : ''), missing.length ? 'err' : 'ok');
+                render();
+                return true;
+            }
+            throw new Error('Gemini לא החזיר מאכל שנמצא במאגר');
+        }
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAkF2i0utPJayFqhzqWEmGh2hIUGhMJZ2o",
-    authDomain: "healthylife-a054b.firebaseapp.com",
-    projectId: "healthylife-a054b",
-    storageBucket: "healthylife-a054b.firebasestorage.app",
-    messagingSenderId: "307773262968",
-    appId: "1:307773262968:web:7fdc12c7789f3d447ab18d"
-  };
+        async function handleVoiceTranscript(tr) {
+            quick.value = tr;
+            let key = st.profile.gemini;
+            if (key) {
+                msg('זוהה: ' + tr + '\nשולח ל-Gemini כדי לבחור מהמאגר...', 'ok');
+                try {
+                    await callGeminiVoice(tr);
+                    return;
+                } catch (err) {
+                    console.warn('Gemini voice failed, fallback local:', err);
+                    msg('Gemini לא הצליח לפרק את ההקלטה. עובר לפירוק מקומי.\n' + tr, 'err');
+                }
+            }
+            quick.value = norm(tr);
+            suggest();
+            msg('זוהה: ' + tr + '\nאחרי ניקוי: ' + quick.value + '\nלחץ הוסף לאישור', 'ok');
+        }
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+        function voice() {
+            let SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SR) { msg('הדפדפן לא תומך בזיהוי קולי. השתמש בהקלדה.', 'err'); return }
+            if (recording) { rec.abort(); return }
+            rec = new SR();
+            rec.lang = 'he-IL';
+            rec.interimResults = false;
+            recording = true;
+            mic.classList.add('rec');
+            mic.textContent = '⏹️';
+            msg('מקליט... אמור: אורז 100, טונה 96, חלב 3% כוס', '');
+            rec.onresult = e => {
+                let tr = e.results[0][0].transcript;
+                handleVoiceTranscript(tr);
+            };
+            rec.onerror = e => msg('שגיאת מיקרופון: ' + (e.error || 'לא ידוע'), 'err');
+            rec.onend = () => { recording = false; mic.classList.remove('rec'); mic.textContent = '🎙️' };
+            rec.start();
+        }
+        function addWorkout() { let min = n(wMin.value), type = wType.value, int = wInt.value, base = { walk: 4, strength: 5, bike: 6, other: 4 }[type], mult = { light: .75, medium: 1, hard: 1.25 }[int], names = { walk: 'הליכה', strength: 'כוח', bike: 'אופניים', other: 'אחר' }; st.workouts.unshift({ id: Date.now(), name: names[type], min, cal: min * base * mult }); render() }
 
-  function setAuthStatus(text, ok = false) {
-    const box = document.getElementById("authStatus");
-    if (!box) return;
-    box.textContent = text;
-    box.className = ok ? "notice ok" : "notice";
-  }
+        async function uploadImage(e, isRecipe) {
+            let file = e.target.files[0];
+            if (!file) return;
+            let key = st.profile.gemini;
+            if (!key) {
+                alert('חסר מפתח Gemini API. אנא הזן מפתח במסך הפרופיל (הגדרות) כדי להשתמש ביכולות ה-AI.');
+                show('Profile');
+                return;
+            }
+            msg('מפענח תמונה...', '');
 
-  window.registerUser = async function(email, password) {
-    try {
-      if (!email || !password) {
-        alert("נא להזין אימייל וסיסמה");
-        return;
-      }
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      setAuthStatus("מחובר: " + userCredential.user.email, true);
-      alert("נרשמת בהצלחה ✅");
-    } catch (error) {
-      alert(error.message);
-      setAuthStatus("שגיאה: " + error.message);
-    }
-  };
+            let reader = new FileReader();
+            reader.onload = function (ev) {
+                let img = new Image();
+                img.onload = async function () {
+                    let canvas = document.createElement('canvas');
+                    let ctx = canvas.getContext('2d');
+                    let maxW = 800, maxH = 800, w = img.width, h = img.height;
+                    if (w > maxW) { h *= maxW / w; w = maxW; }
+                    if (h > maxH) { w *= maxH / h; h = maxH; }
+                    canvas.width = w; canvas.height = h;
+                    ctx.drawImage(img, 0, 0, w, h);
+                    let b64 = canvas.toDataURL('image/jpeg', 0.8).split(',')[1];
 
-  window.loginUser = async function(email, password) {
-    try {
-      if (!email || !password) {
-        alert("נא להזין אימייל וסיסמה");
-        return;
-      }
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      setAuthStatus("מחובר: " + userCredential.user.email, true);
-      alert("התחברת בהצלחה ✅");
-    } catch (error) {
-      alert(error.message);
-      setAuthStatus("שגיאה: " + error.message);
-    }
-  };
+                    try {
+                        await callGemini(b64, key, isRecipe);
+                    } catch (err) {
+                        console.error(err);
+                        msg('שגיאה בזיהוי התמונה. בדוק את מפתח ה-API.', 'err');
+                    }
+                    e.target.value = '';
+                }
+                img.src = ev.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
 
-  window.logoutUser = async function() {
-    try {
-      await signOut(auth);
-      setAuthStatus("לא מחובר");
-      alert("התנתקת בהצלחה");
-    } catch (error) {
-      alert(error.message);
-    }
-  };
+        async function callGemini(base64, key, isRecipe) {
+            let tot = totals(), targ = st.targets;
+            let prompt = isRecipe
+                ? `אני עוקב אחרי התזונה שלי. נשאר לי היום לאכול: ${Math.round(targ.calories - tot.cal)} קלוריות, ו-${Math.round(targ.protein - tot.p)} גרם חלבון. הנה תמונה של המצרכים שיש לי. הצע לי מתכון אחד קצר, ברור וטעים שאני יכול להכין ממה שיש בתמונה (מותר להשתמש בתבלינים ושמן בסיסיים), שיתאים פחות או יותר לערכים שנשארו לי. החזר רק את המתכון בעברית, כולל כמויות מדויקות של כל רכיב ואופן ההכנה.`
+                : `אתה תזונאי מומחה. עליך לזהות את האוכל והכמויות בתמונה. החזר רק אובייקט JSON חוקי אחד (ללא טקסט עזר וללא סימון Markdown), במבנה הבא בדיוק: {"name": "שם המאכל בעברית", "amount": משקל_בגרמים, "cal": סך_קלוריות, "p": סך_חלבון_בגרמים, "c": סך_פחמימות, "f": סך_שומן}. אם יש כמה מאכלים, חבר אותם למנה אחת. ספק הערכות מדויקות ככל שניתן למשקל וערכים לפי התמונה.`;
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setAuthStatus("מחובר: " + user.email, true);
-    } else {
-      setAuthStatus("לא מחובר");
-    }
-  });
-</script>
+            let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: 'image/jpeg', data: base64 } }] }]
+                })
+            });
+            let data = await res.json();
+            if (data.error) throw new Error(data.error.message);
+            let text = data.candidates[0].content.parts[0].text;
+
+            if (isRecipe) {
+                document.getElementById('recipeBox').classList.remove('hide');
+                document.getElementById('recipeContent').textContent = text;
+                msg('המתכון מוכן!', 'ok');
+            } else {
+                let json = text.replace(/```json/g, '').replace(/```/g, '').trim();
+                let obj = JSON.parse(json);
+                let q = obj.amount / 100;
+                let f = { name: obj.name + ' (AI)', u: 'g', cal: obj.cal / q, p: obj.p / q, c: obj.c / q, f: obj.f / q, v: 0, w: 0 };
+                addEntry(f, obj.amount);
+                msg(`זוהה: ${obj.name} (${obj.amount}ג') נוסף בהצלחה!`, 'ok');
+                render();
+            }
+        }
+        render();
+        if (st.profile.saved) show('Today');
+        if (document.getElementById('geminiApi')) document.getElementById('geminiApi').value = st.profile.gemini || '';
+        if (mabatDB.length > 0 && document.getElementById('mabatBtn')) {
+            document.getElementById('mabatBtn').textContent = `המאגר מסונכרן (${mabatDB.length} מתוך יעד 4,500 פריטים)`;
+        }
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAkF2i0utPJayFqhzqWEmGh2hIUGhMJZ2o",
+            authDomain: "healthylife-a054b.firebaseapp.com",
+            projectId: "healthylife-a054b",
+            storageBucket: "healthylife-a054b.firebasestorage.app",
+            messagingSenderId: "307773262968",
+            appId: "1:307773262968:web:7fdc12c7789f3d447ab18d"
+        };
+
+        const fbApp = initializeApp(firebaseConfig);
+        const auth = getAuth(fbApp);
+        const db = getFirestore(fbApp);
+
+        function setAuthStatus(text, ok=false){
+            const el = document.getElementById('authStatus');
+            if(!el) return;
+            el.textContent = text;
+            el.className = ok ? 'notice statusOk' : 'notice statusBad';
+        }
+
+        window.registerUser = async function(email,password){
+            try{
+                if(!email || !password){ alert('חסר אימייל או סיסמה'); return; }
+                await createUserWithEmailAndPassword(auth,email,password);
+                setAuthStatus('נרשמת בהצלחה',true);
+            }catch(e){ setAuthStatus('שגיאה: '+e.message,false); }
+        }
+        window.loginUser = async function(email,password){
+            try{
+                if(!email || !password){ alert('חסר אימייל או סיסמה'); return; }
+                const u = await signInWithEmailAndPassword(auth,email,password);
+                setAuthStatus('מחובר: '+u.user.email,true);
+            }catch(e){ setAuthStatus('שגיאה: '+e.message,false); }
+        }
+        window.logoutUser = async function(){
+            await signOut(auth);
+            setAuthStatus('לא מחובר',false);
+        }
+        window.cloudSave = function(){
+            clearTimeout(saveTimer);
+            saveTimer = setTimeout(async()=>{
+                if(!currentUser) return;
+                try{
+                    await setDoc(doc(db,'users',currentUser.uid),{data:st,updatedAt:new Date().toISOString()},{merge:true});
+                }catch(e){ console.error('cloud save failed', e); }
+            },700);
+        }
+        onAuthStateChanged(auth, async user=>{
+            currentUser = user;
+            if(user){
+                setAuthStatus('מחובר: '+user.email,true);
+                try{
+                    const ref = doc(db,'users',user.uid);
+                    const snap = await getDoc(ref);
+                    if(snap.exists() && snap.data().data){
+                        st = {...base, ...snap.data().data};
+                        st.recent = st.recent || [];
+                        st.fixedMeals = st.fixedMeals || {};
+                        localStorage.setItem(KEY, JSON.stringify(st));
+                        render();
+                    }else{
+                        await setDoc(ref,{email:user.email,data:st,createdAt:new Date().toISOString()},{merge:true});
+                    }
+                }catch(e){ console.error('cloud load failed', e); setAuthStatus('מחובר, אבל טעינת ענן נכשלה: '+e.message,false); }
+            }else{
+                setAuthStatus('לא מחובר',false);
+            }
+        });
+    </script>
 </body>
+
 </html>
