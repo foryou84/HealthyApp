@@ -183,6 +183,29 @@
             color: #be123c
         }
 
+        .warn {
+            background: #fffbeb;
+            color: #92400e
+        }
+
+        .orange {
+            background: #f59e0b
+        }
+
+        .greenbtn {
+            background: #22c55e
+        }
+
+        .mutedbtn {
+            background: #6b7280
+        }
+
+        .qualityScore {
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--blue)
+        }
+
         .traffic {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -307,13 +330,6 @@
             background: var(--blue);
             color: #fff
         }
-        .greenbtn{background:#22c55e!important;color:white!important}
-        .orangebtn{background:#f59e0b!important;color:white!important}
-        .mutedbtn{background:#6b7280!important;color:white!important}
-        .mini-btn{width:auto;background:#eef2ff;color:#3730a3;margin:4px;padding:9px 11px;border-radius:14px}
-        .statusOk{background:#ecfdf5;color:#047857}
-        .statusBad{background:#fff1f2;color:#be123c}
-
     </style>
 </head>
 
@@ -367,7 +383,7 @@
             </div>
             <div class="card">
                 <h2>🇮🇱 מאגר משרד הבריאות</h2>
-                <div class="small" style="margin-bottom:10px">האפליקציה תמשוך ותשמור כ-4,500 מאכלים ממאגר MABAT הרשמי. זה
+                <div class="small" style="margin-bottom:10px">האפליקציה תמשוך ותשמור אלפי מאכלים ממאגר MABAT הרשמי. זה
                     מתבצע פעם אחת כדי לאפשר חיפוש אופליין ללא הגבלה.</div>
                 <button id="mabatBtn" onclick="fetchMabat()">סנכרן מאגר (MABAT)</button>
             </div>
@@ -376,13 +392,13 @@
                 <div class="small" style="margin-bottom:10px">כדי לצלם אוכל ולקבל מתכונים, הוסף מפתח Google Gemini API
                     חינמי. <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:#3730a3">לחץ
                         כאן ליצירת מפתח</a>.</div>
-                <div class="notice">חדש: הקלטה קולית מחוברת ל-Gemini. כשיש API Key, האפליקציה מפרקת משפט כמו "חלב 3% כוס ואורז 100" ובוחרת מאכלים מהמאגר.</div>
                 <input id="geminiApi" type="password" placeholder="הדבק מפתח API כאן..."
                     oninput="st.profile.gemini=this.value;save()">
             </div>
+        
             <div class="card">
                 <h2>🔐 התחברות וסנכרון Firebase</h2>
-                <div class="small">התחברות שומרת את הנתונים בענן לפי משתמש ומסנכרנת בין מחשב לאייפון.</div>
+                <div class="small">התחברות מאפשרת סנכרון נתונים בין מחשב לאייפון.</div>
                 <div class="grid2">
                     <div><label>אימייל</label><input id="loginEmail" type="email" placeholder="your@email.com"></div>
                     <div><label>סיסמה</label><input id="loginPassword" type="password" placeholder="לפחות 6 תווים"></div>
@@ -390,11 +406,11 @@
                 <div class="grid3">
                     <button onclick="loginUser(loginEmail.value,loginPassword.value)">התחברות</button>
                     <button class="greenbtn" onclick="registerUser(loginEmail.value,loginPassword.value)">הרשמה</button>
-                    <button class="mutedbtn" onclick="logoutUser()">התנתקות</button>
+                    <button class="redbtn" onclick="logoutUser()">התנתקות</button>
                 </div>
                 <div id="authStatus" class="notice">לא מחובר</div>
             </div>
-        </section>
+</section>
 
         <section id="pToday" class="page">
             <div id="recipeBox" class="card hide" style="background:#f3e8ff; border:2px solid #a855f7">
@@ -430,6 +446,21 @@
                 <div class="grid3"><button onclick="addWater(200)">+200</button><button
                         onclick="addWater(250)">+250</button><button onclick="addWater(500)">+500</button></div>
             </div>
+
+            <div class="card">
+                <h2>🔔 מאזן שתייה חכם</h2>
+                <div class="small">מים נספרים 100%, תה/קפה 90%, זירו כנוזלים אך לא מים, חלב/מיץ מוסיפים גם קלוריות ומקרו. אם אין עדכון שתייה 2.5 שעות - תופיע תזכורת וצליל.</div>
+                <div class="grid3">
+                    <button onclick="addDrink('water',250)">מים 250</button>
+                    <button onclick="addDrink('tea',250)">תה/קפה 250</button>
+                    <button onclick="addDrink('zero',330)">זירו 330</button>
+                    <button onclick="addDrink('milk3',240)">חלב 3% כוס</button>
+                    <button onclick="addDrink('juice',240)">מיץ כוס</button>
+                    <button class="mutedbtn" onclick="testHydrationReminder()">בדיקת צליל</button>
+                </div>
+                <div id="hydrationBalance" class="notice"></div>
+            </div>
+
         </section>
 
         <section id="pFood" class="page">
@@ -452,35 +483,38 @@
                     <button id="mic" class="mic" onclick="voice()" title="הקלדה קולית">🎙️</button>
                     <button id="camBtn" class="mic" onclick="document.getElementById('aiCamera').click()"
                         title="צילום חכם AI">📷</button>
+                    <button id="galleryBtn" class="mic" onclick="document.getElementById('aiGallery').click()"
+                        title="בחירה מגלריה">🖼️</button>
                     <input type="file" id="aiCamera" accept="image/*" capture="environment" class="hide"
+                        onchange="uploadImage(event, false)">
+                    <input type="file" id="aiGallery" accept="image/*" class="hide"
                         onchange="uploadImage(event, false)">
                 </div>
                 <div class="grid2"><button onclick="addQuick()">הוסף</button><button style="background:#6b7280"
                         onclick="quick.value='';msg('',0);sbox.classList.add('hide')">נקה</button></div>
                 <div id="msg" class="notice hide"></div>
+                <div id="foodChoices" class="notice hide"></div>
+                <div id="aiEditBox" class="notice hide"></div>
                 <div id="chips" class="chiprow"></div>
             </div>
-            <div class="card">
-                <h2>⭐ ארוחות קבועות</h2>
+            <div class="card" id="manualSmartBox">
+                <h2>✍️ מאכל ידני חכם</h2>
+                <div class="small">מחובר למאגר הפנימי, MABAT ול-Gemini. אפשר להזין גרם / מ״ל / כף / כפית / כוס / חצי כוס / יחידה / פרוסה. אם לא נמצא במאגר, Gemini ישלים.</div>
                 <div class="grid2">
-                    <button class="greenbtn" onclick="addFixedMeal('breakfast')">בוקר קבוע</button>
-                    <button class="greenbtn" onclick="addFixedMeal('lunch')">צהריים קבוע</button>
+                    <div><label>שם</label><input id="mName" placeholder="לדוגמה: פיתה / חלב 3% / טחינה"></div>
+                    <div><label>כמות</label><input id="mAmount" value="100" inputmode="decimal"></div>
                 </div>
                 <div class="grid2">
-                    <button class="orangebtn" onclick="saveFixedMeal()">שמור 4 רשומות אחרונות כקבוע</button>
-                    <button class="mutedbtn" onclick="clearFixedMeals()">אפס קבועות</button>
-                </div>
-                <div id="fixedMealsBox" class="notice"></div>
-            </div>
-            <div class="card">
-                <h2>↩️ אכלתי לאחרונה</h2>
-                <div id="recentBox"></div>
-            </div>
-            <div class="card">
-                <h2>✍️ מאכל ידני</h2>
-                <div class="grid2">
-                    <div><label>שם</label><input id="mName"></div>
-                    <div><label>כמות גרם/מ״ל</label><input id="mAmount" value="100" inputmode="decimal"></div>
+                    <div><label>יחידה</label><select id="mUnit">
+                        <option value="g">גרם</option>
+                        <option value="ml">מ״ל</option>
+                        <option value="cup">כוס</option>
+                        <option value="tbsp">כף</option>
+                        <option value="tsp">כפית</option>
+                        <option value="unit">יחידה</option>
+                        <option value="slice">פרוסה</option>
+                    </select></div>
+                    <div><label>המרה לגרם/מ״ל</label><input id="mConverted" readonly placeholder="יחושב אוטומטית"></div>
                 </div>
                 <div class="grid2">
                     <div><label>קלוריות ל-100</label><input id="mCal" value="0" inputmode="decimal"></div>
@@ -489,8 +523,25 @@
                 <div class="grid2">
                     <div><label>פחמימה ל-100</label><input id="mCarb" value="0" inputmode="decimal"></div>
                     <div><label>שומן ל-100</label><input id="mFat" value="0" inputmode="decimal"></div>
-                </div><label>ירקות ל-100</label><input id="mVeg" value="0" inputmode="decimal"><button
-                    onclick="addManual()">שמור ידני</button>
+                </div><label>ירקות ל-100</label><input id="mVeg" value="0" inputmode="decimal">
+
+                <div class="grid2">
+                    <button class="mutedbtn" onclick="manualLookupPreview()">חפש במאגר / המר</button>
+                    <button onclick="addManualSmart()">שמור לארוחה</button>
+                </div>
+                <button class="orange" onclick="searchManualWithAi()">חפש ערכים ב-AI</button>
+                <div id="manualLookupBox" class="notice hide"></div>
+
+                <label>הדבק ארוחה מלאה / כמה פריטים</label>
+                <textarea id="bulkFoodText" rows="5" placeholder="פיתה 105 גרם
+גבינה צהובה 22% 20 גרם
+גבינת שמנת 5% 20 גרם
+סרירצה 5 גרם
+ביצה L"></textarea>
+                <div class="grid2">
+                    <button class="mutedbtn" onclick="parseBulkLocal()">פירוק לפי מאגר</button>
+                    <button class="orange" onclick="parseBulkWithAi()">פירוק מלא ב-AI</button>
+                </div>
             </div>
         </section>
 
@@ -563,7 +614,7 @@
             onclick="show('Log')"><span class="ico">🧾</span>יומן</button></nav>
     <script>
         const KEY = 'healthy_life_v_full_profile';
-        const base = { profile: { age: 63, weight: 83.5, height: 174, goalWeight: 78, gender: 'male', activity: 1.375, goal: 'cut', saved: false, coach: 'רגיל' }, targets: { calories: 1750, protein: 95, carbs: 170, fat: 55, veg: 500, water: 2400 }, water: 0, steps: 0, entries: [], workouts: [], currentMeal: 'בוקר', weights: [], dietitian: [], recent: [], fixedMeals: {} };
+        const base = { profile: { age: 63, weight: 83.5, height: 174, goalWeight: 78, gender: 'male', activity: 1.375, goal: 'cut', saved: false, coach: 'רגיל' }, targets: { calories: 1750, protein: 95, carbs: 170, fat: 55, veg: 500, water: 2400 }, water: 0, steps: 0, entries: [], workouts: [], currentMeal: 'בוקר', weights: [], dietitian: [], drinks: [], lastDrinkAt: null, fixedMeals: [] };
         function setMeal(m, el) { st.currentMeal = m; document.querySelectorAll('.meal-chip').forEach(c => c.classList.remove('on')); el.classList.add('on'); save(); }
         const foods = [
             { name: 'אורז מבושל', a: ['אורז', 'אורז לבן', 'אורז בסמטי'], u: 'g', cal: 130, p: 2.7, c: 28, f: .3, v: 0, w: 0 }, { name: 'אורז מלא מבושל', a: ['אורז מלא'], u: 'g', cal: 111, p: 2.6, c: 23, f: .9, v: 0, w: 0 }, { name: 'פסטה מבושלת', a: ['פסטה', 'ספגטי'], u: 'g', cal: 158, p: 5.8, c: 31, f: .9, v: 0, w: 0 }, { name: 'פתיתים מבושלים', a: ['פתיתים'], u: 'g', cal: 170, p: 5, c: 35, f: 1, v: 0, w: 0 }, { name: 'קוסקוס מבושל', a: ['קוסקוס'], u: 'g', cal: 112, p: 3.8, c: 23, f: .2, v: 0, w: 0 }, { name: 'בורגול מבושל', a: ['בורגול'], u: 'g', cal: 83, p: 3.1, c: 18.6, f: .2, v: 0, w: 0 }, { name: 'קינואה מבושלת', a: ['קינואה'], u: 'g', cal: 120, p: 4.4, c: 21.3, f: 1.9, v: 0, w: 0 }, { name: 'תפוח אדמה מבושל', a: ['תפוח אדמה', 'תפוא', 'תפוחי אדמה'], u: 'g', cal: 87, p: 1.9, c: 20, f: .1, v: 0, w: 0 }, { name: 'בטטה אפויה', a: ['בטטה'], u: 'g', cal: 90, p: 2, c: 21, f: .2, v: 0, w: 0 }, { name: 'לחם לבן', a: ['לחם', 'פרוסה', 'פרוסת לחם', 'לחם לבן'], u: 'g', cal: 260, p: 9, c: 49, f: 3.2, v: 0, w: 0 }, { name: 'לחם מלא', a: ['לחם מלא', 'פרוסת לחם מלא'], u: 'g', cal: 247, p: 13, c: 41, f: 4.2, v: 0, w: 0 }, { name: 'פיתה', a: ['פיתה'], u: 'g', cal: 275, p: 9, c: 56, f: 1.2, v: 0, w: 0 }, { name: 'לאפה', a: ['לאפה'], u: 'g', cal: 300, p: 9, c: 55, f: 5, v: 0, w: 0 }, { name: 'שיבולת שועל', a: ['שיבולת שועל', 'קוואקר'], u: 'g', cal: 389, p: 16.9, c: 66.3, f: 6.9, v: 0, w: 0 }, { name: 'קורנפלקס רגיל', a: ['קורנפלקס'], u: 'g', cal: 370, p: 7, c: 84, f: 1, v: 0, w: 0 }, { name: 'גרנולה', a: ['גרנולה'], u: 'g', cal: 450, p: 10, c: 64, f: 17, v: 0, w: 0 },
@@ -572,21 +623,20 @@
             { name: 'שעועית ירוקה', a: ['שעועית', 'שעועים', 'שעועית ירוקה'], u: 'g', cal: 35, p: 2, c: 7, f: .2, v: 100, w: 0 }, { name: 'מלפפון', a: ['מלפפון', 'מלפפונים'], u: 'g', cal: 15, p: .7, c: 3.6, f: .1, v: 100, w: 0 }, { name: 'עגבניות שרי', a: ['שרי', 'עגבניות שרי', 'עגבניה', 'עגבניות'], u: 'g', cal: 18, p: .9, c: 3.9, f: .2, v: 100, w: 0 }, { name: 'חסה', a: ['חסה'], u: 'g', cal: 15, p: 1.4, c: 2.9, f: .2, v: 100, w: 0 }, { name: 'כרוב', a: ['כרוב'], u: 'g', cal: 25, p: 1.3, c: 5.8, f: .1, v: 100, w: 0 }, { name: 'גזר', a: ['גזר'], u: 'g', cal: 41, p: .9, c: 10, f: .2, v: 100, w: 0 }, { name: 'פלפל', a: ['פלפל', 'פלפל אדום', 'גמבה'], u: 'g', cal: 31, p: 1, c: 6, f: .3, v: 100, w: 0 }, { name: 'בצל', a: ['בצל'], u: 'g', cal: 40, p: 1.1, c: 9.3, f: .1, v: 100, w: 0 }, { name: 'קישוא', a: ['קישוא', 'זוקיני'], u: 'g', cal: 17, p: 1.2, c: 3.1, f: .3, v: 100, w: 0 }, { name: 'ברוקולי', a: ['ברוקולי'], u: 'g', cal: 34, p: 2.8, c: 6.6, f: .4, v: 100, w: 0 }, { name: 'כרובית', a: ['כרובית'], u: 'g', cal: 25, p: 1.9, c: 5, f: .3, v: 100, w: 0 }, { name: 'סלט ירקות', a: ['סלט', 'סלט ירקות'], u: 'g', cal: 25, p: 1, c: 5, f: .2, v: 100, w: 0 },
             { name: 'שמן זית', a: ['שמן', 'שמן זית'], u: 'g', cal: 884, p: 0, c: 0, f: 100, v: 0, w: 0 }, { name: 'טחינה מוכנה', a: ['טחינה', 'טחינה מוכנה'], u: 'g', cal: 250, p: 7, c: 6, f: 22, v: 0, w: 0 }, { name: 'אבוקדו', a: ['אבוקדו'], u: 'g', cal: 160, p: 2, c: 8.5, f: 14.7, v: 0, w: 0 }, { name: 'אגוזים', a: ['אגוזים', 'שקדים', 'אגוזי מלך'], u: 'g', cal: 600, p: 20, c: 20, f: 52, v: 0, w: 0 }, { name: 'חמאת בוטנים', a: ['חמאת בוטנים'], u: 'g', cal: 588, p: 25, c: 20, f: 50, v: 0, w: 0 },
             { name: 'פרי ממוצע', a: ['פרי'], u: 'g', cal: 55, p: .3, c: 14, f: .2, v: 0, w: 0 }, { name: 'תפוח', a: ['תפוח'], u: 'g', cal: 52, p: .3, c: 14, f: .2, v: 0, w: 0 }, { name: 'בננה', a: ['בננה'], u: 'g', cal: 89, p: 1.1, c: 23, f: .3, v: 0, w: 0 }, { name: 'תפוז', a: ['תפוז'], u: 'g', cal: 47, p: .9, c: 12, f: .1, v: 0, w: 0 }, { name: 'ענבים', a: ['ענבים'], u: 'g', cal: 69, p: .7, c: 18, f: .2, v: 0, w: 0 }, { name: 'ריבה', a: ['ריבה', 'ריבת תאנים'], u: 'g', cal: 260, p: .3, c: 65, f: 0, v: 0, w: 0 }, { name: 'דבש', a: ['דבש'], u: 'g', cal: 304, p: .3, c: 82, f: 0, v: 0, w: 0 },
-            { name: 'מים', a: ['מים', 'כוס מים'], u: 'ml', cal: 0, p: 0, c: 0, f: 0, v: 0, w: 100 }, { name: 'תה ללא סוכר', a: ['תה', 'תה ירוק', 'תה צמחים'], u: 'ml', cal: 2, p: 0, c: 0, f: 0, v: 0, w: 100 }, { name: 'קפה שחור', a: ['קפה שחור', 'נס קפה'], u: 'ml', cal: 2, p: 0, c: 0, f: 0, v: 0, w: 100 }, { name: 'קפוצ׳ינו דקפ חצי מים חצי חלב 1%', a: ['קפוצינו', 'קפוצ׳ינו', 'קפה', 'קפה דקפ', 'קפוצינו דקפ'], u: 'ml', cal: 25, p: 1.8, c: 2.4, f: .5, v: 0, w: 100 }, { name: 'חלב 3%', a: ['חלב 3', 'חלב 3%', 'חלב שלוש אחוז'], u: 'ml', cal: 61, p: 3.3, c: 4.7, f: 3, v: 0, w: 90 }, { name: 'חלב 1%', a: ['חלב', 'חלב 1'], u: 'ml', cal: 42, p: 3.4, c: 5, f: 1, v: 0, w: 100 }, { name: 'קולה זירו', a: ['קולה זירו', 'זירו', 'דיאט קולה'], u: 'ml', cal: 1, p: 0, c: 0, f: 0, v: 0, w: 100 }
+            { name: 'מים', a: ['מים', 'כוס מים'], u: 'ml', cal: 0, p: 0, c: 0, f: 0, v: 0, w: 100 }, { name: 'תה ללא סוכר', a: ['תה', 'תה ירוק', 'תה צמחים'], u: 'ml', cal: 2, p: 0, c: 0, f: 0, v: 0, w: 100 }, { name: 'קפה שחור', a: ['קפה שחור', 'נס קפה'], u: 'ml', cal: 2, p: 0, c: 0, f: 0, v: 0, w: 100 }, { name: 'קפוצ׳ינו דקפ חצי מים חצי חלב 1%', a: ['קפוצינו', 'קפוצ׳ינו', 'קפה', 'קפה דקפ', 'קפוצינו דקפ'], u: 'ml', cal: 25, p: 1.8, c: 2.4, f: .5, v: 0, w: 100 }, { name: 'חלב 1%', a: ['חלב', 'חלב 1'], u: 'ml', cal: 42, p: 3.4, c: 5, f: 1, v: 0, w: 100 }, { name: 'קולה זירו', a: ['קולה זירו', 'זירו', 'דיאט קולה'], u: 'ml', cal: 1, p: 0, c: 0, f: 0, v: 0, w: 100 }
         ];
-        let st = load(), mabatDB = [], rec = null, recording = false, currentUser = null, saveTimer = null;
+        let st = load(), mabatDB = [], rec = null, recording = false;
         try { mabatDB = JSON.parse(localStorage.getItem('healthy_life_mabat') || '[]'); } catch { mabatDB = []; }
-st.recent = st.recent || []; st.fixedMeals = st.fixedMeals || {}; st.profile = {...base.profile, ...(st.profile||{})};
-        function load() { try { return { ...base, ...JSON.parse(localStorage.getItem(KEY) || '{}') } } catch { return JSON.parse(JSON.stringify(base)) } } function save() { localStorage.setItem(KEY, JSON.stringify(st)); if(window.cloudSave) window.cloudSave(); } function n(x) { let v = Number(String(x || '').replace(',', '.')); return isFinite(v) ? v : 0 } function r(x) { return Math.round(n(x) * 10) / 10 }
+        function load() { try { return { ...base, ...JSON.parse(localStorage.getItem(KEY) || '{}') } } catch { return JSON.parse(JSON.stringify(base)) } } function save() { localStorage.setItem(KEY, JSON.stringify(st)) } function n(x) { let v = Number(String(x || '').replace(',', '.')); return isFinite(v) ? v : 0 } function r(x) { return Math.round(n(x) * 10) / 10 }
 
         async function fetchMabat() {
             let btn = document.getElementById('mabatBtn');
             btn.textContent = 'מוריד נתונים (יכול לקחת דקה)...';
             btn.disabled = true;
             try {
-                let res = await fetch('https://data.gov.il/api/3/action/datastore_search?resource_id=c3cb0630-0650-46c1-a068-82d575c094b2&limit=4500');
+                let res = await fetch('https://data.gov.il/api/3/action/datastore_search?resource_id=c3cb0630-0650-46c1-a068-82d575c094b2&limit=10000');
                 let data = await res.json();
-                mabatDB = data.result.records.slice(0,4500).map(r => {
+                mabatDB = data.result.records.map(r => {
                     let cname = clean(r.shmmitzrach);
                     let rev = cname.split(' ').reverse().join(' ');
                     return {
@@ -597,7 +647,7 @@ st.recent = st.recent || []; st.fixedMeals = st.fixedMeals || {}; st.profile = {
                     }
                 });
                 localStorage.setItem('healthy_life_mabat', JSON.stringify(mabatDB));
-                btn.textContent = `המאגר מסונכרן (${mabatDB.length} מתוך יעד 4,500 פריטים)`;
+                btn.textContent = `המאגר מסונכרן (${mabatDB.length} פריטים)`;
                 msg('מאגר MABAT סונכרן בהצלחה!', 'ok');
             } catch (e) {
                 btn.textContent = 'שגיאה בהורדה - נסה שוב';
@@ -608,49 +658,83 @@ st.recent = st.recent || []; st.fixedMeals = st.fixedMeals || {}; st.profile = {
         }
         function show(p) { ['Profile', 'Today', 'Food', 'Workout', 'Track', 'Log'].forEach(x => { document.getElementById('p' + x).classList.toggle('on', x == p); document.getElementById('t' + x).classList.toggle('on', x == p) }) }
         function calcProfile(p) { let b = p.gender == 'male' ? 10 * p.weight + 6.25 * p.height - 5 * p.age + 5 : 10 * p.weight + 6.25 * p.height - 5 * p.age - 161; let cal = b * p.activity; if (p.goal == 'cut') cal -= 400; if (p.goal == 'bulk') cal += 250; let protein = Math.round(p.weight * (p.goal == 'cut' ? 1.6 : 1.3)); let fat = Math.round(p.weight * .75); let carbs = Math.max(80, Math.round((cal - protein * 4 - fat * 9) / 4)); return { bmr: Math.round(b), cal: Math.round(cal), protein, fat, carbs } }
-        function saveProfile() { st.profile = { age: n(age.value), weight: n(weight.value), height: n(height.value), goalWeight: n(goalWeight.value), gender: gender.value, activity: n(activity.value), goal: goal.value, saved: true }; let x = calcProfile(st.profile); st.targets = { calories: x.cal, protein: x.protein, carbs: x.carbs, fat: x.fat, veg: 500, water: Math.round(Math.min(2800, Math.max(2000, st.profile.weight * 30))) }; profileResult.innerHTML = `BMR: ${x.bmr}<br>יעד קלוריות: ${x.cal}<br>חלבון ${x.protein}ג׳ | פחמימה ${x.carbs}ג׳ | שומן ${x.fat}ג׳`; save(); render(); show('Today') }
+        function saveProfile() { st.profile = { age: n(age.value), weight: n(weight.value), height: n(height.value), goalWeight: n(goalWeight.value), gender: gender.value, activity: n(activity.value), goal: goal.value, saved: true }; let x = calcProfile(st.profile); st.targets = { calories: x.cal, protein: x.protein, carbs: x.carbs, fat: x.fat, veg: 500, water: Math.round(Math.min(2800, Math.max(2000, st.profile.weight * 30))) }; profileResult.innerHTML = `BMR: ${x.bmr}<br>יעד קלוריות: ${x.cal}<br>חלבון ${x.protein}ג׳ | פחמימה ${x.carbs}ג׳ | שומן ${x.fat}ג׳`; save(); try {
+            if (document.getElementById('mName')) mName.addEventListener('input', manualConvertedAmount);
+            if (document.getElementById('mAmount')) mAmount.addEventListener('input', manualConvertedAmount);
+            if (document.getElementById('mUnit')) mUnit.addEventListener('change', manualConvertedAmount);
+        } catch(e) {}
+        setInterval(() => {
+            if (!st.lastDrinkAt) return;
+            if ((Date.now() - new Date(st.lastDrinkAt).getTime()) > 2.5 * 60 * 60 * 1000) {
+                playHydrationSound();
+            }
+        }, 15 * 60 * 1000);
+        render(); show('Today') }
         function totals() { let t = { cal: 0, p: 0, c: 0, f: 0, v: 0, w: st.water, burn: 0 }; st.entries.forEach(e => { t.cal += e.cal; t.p += e.p; t.c += e.c; t.f += e.f; t.v += e.v; t.w += e.w }); st.workouts.forEach(w => t.burn += w.cal); return t }
         function prog(name, used, target, unit, cls = '') { let pct = Math.min(100, used / Math.max(target, 1) * 100), over = used > target; return `<div class=row><span>${name}</span><span style="color:${over ? '#ef4444' : 'inherit'}">${Math.round(used)} / ${Math.round(target)} ${unit}</span></div><div class=bar><div class="fill ${over ? 'red' : cls}" style="width:${pct}%"></div></div>` }
-        function render() { date.textContent = new Date().toLocaleDateString('he-IL', { weekday: 'long', day: 'numeric', month: 'long' }); let p = st.profile; age.value = p.age; weight.value = p.weight; height.value = p.height; goalWeight.value = p.goalWeight; gender.value = p.gender; activity.value = p.activity; goal.value = p.goal; if (p.saved) { let x = calcProfile(p); profileResult.innerHTML = `BMR: ${x.bmr}<br>יעד קלוריות: ${x.cal}<br>חלבון ${x.protein}ג׳ | פחמימה ${x.carbs}ג׳ | שומן ${x.fat}ג׳` } let t = totals(), g = st.targets; progress.innerHTML = prog('קלוריות', t.cal, g.calories, 'קק״ל', 'yellow') + prog('חלבון', t.p, g.protein, 'ג׳', 'green') + prog('פחמימה', t.c, g.carbs, 'ג׳', 'purple') + prog('שומן', t.f, g.fat, 'ג׳') + prog('ירקות', t.v, g.veg, 'ג׳', 'green') + prog('שתייה', t.w, g.water, 'מ״ל') + prog('אימון', t.burn, 250, 'קק״ל', 'yellow'); waterText.textContent = `${Math.round(t.w)} / ${g.water} מ״ל`; waterFill.style.width = Math.min(100, t.w / g.water * 100) + '%'; traffic.innerHTML = ['calories', 'protein', 'carbs', 'fat', 'veg', 'water'].map(k => light(k, t, g)).join(''); coach.textContent = coachMsg(t, g, p); let meals = { 'בוקר': { cal: 0, p: 0 }, 'צהריים': { cal: 0, p: 0 }, 'ערב': { cal: 0, p: 0 }, 'ביניים': { cal: 0, p: 0 }, 'לילה': { cal: 0, p: 0 } }; st.entries.forEach(e => { let m = e.meal || 'בוקר'; if (meals[m]) { meals[m].cal += e.cal; meals[m].p += e.p; } }); let mHtml = ''; for (let m in meals) { if (meals[m].cal > 0) { let pct = Math.min(100, meals[m].cal / Math.max(g.calories, 1) * 100); mHtml += `<div class=row style="margin-top:12px;margin-bottom:2px"><span>${m}</span><b>${Math.round(meals[m].cal)} קק״ל</b></div><div class=small style="margin-bottom:6px">חלבון: ${Math.round(meals[m].p)} ג׳</div><div class=bar style="height:6px"><div class="fill" style="width:${pct}%"></div></div>`; } } if (!mHtml) mHtml = '<div class=notice>עדיין לא הוזן אוכל היום.</div>'; document.getElementById('mealBreakdown').innerHTML = mHtml; if(typeof renderHydrationBalance==='function') renderHydrationBalance(); entries.innerHTML = st.entries.length ? st.entries.map(e => `<div class=entry><div><b>${e.name}</b> <span class="small" style="background:#eef2ff;color:#3730a3;padding:2px 6px;border-radius:6px;font-size:11px">${e.meal || 'בוקר'}</span><div class=small>${e.amount}${e.unit == 'ml' ? ' מ״ל' : ' ג׳'} | ${Math.round(e.cal)} קק״ל | חלבון ${r(e.p)} | פחמימה ${r(e.c)} | שומן ${r(e.f)} | ירק ${Math.round(e.v)} | מים ${Math.round(e.w)}</div></div><button class=del onclick="delE(${e.id})">מחק</button></div>`).join('') : '<div class=notice>אין רשומות</div>'; workouts.innerHTML = st.workouts.length ? st.workouts.map(w => `<div class=entry><div><b>${w.name}</b><div class=small>${w.min} דקות | ${Math.round(w.cal)} קק״ל</div></div><button class=del onclick="delW(${w.id})">מחק</button></div>`).join('') : '<div class=notice>אין אימונים</div>'; chips.innerHTML = foods.slice(0, 18).map(f => `<button class=chip onclick="quick.value+=' ${f.a[0]} ';quick.focus()">${f.a[0]}</button>`).join(''); document.querySelectorAll('.meal-chip').forEach(c => c.classList.toggle('on', c.textContent === (st.currentMeal || 'בוקר'))); if (document.getElementById('coachStyle')) document.getElementById('coachStyle').value = p.coach || 'רגיל'; renderRecent(); renderFixed(); document.getElementById('stepsDisp').textContent = st.steps || 0; document.getElementById('weightsList').innerHTML = (st.weights || []).length ? st.weights.map((x, i) => `<div class=entry><div><b>${new Date(x.d).toLocaleDateString('he-IL')}</b> <span>${x.w} ק״ג</span></div><button class=del onclick="delWeight(${i})">מחק</button></div>`).join('') : '<div class=small>אין שקילות.</div>'; document.getElementById('dietList').innerHTML = (st.dietitian || []).length ? st.dietitian.map((x, i) => `<div class=entry style="flex-direction:column;align-items:start;gap:5px;width:100%"><b>${x.d}</b><div class=small style="white-space:pre-wrap;line-height:1.4">${x.txt}</div><button class=del style="align-self:end" onclick="delDiet(${i})">מחק</button></div>`).join('') : '<div class=small>אין רשומות דיאטנית.</div>'; save() }
+        function render() { date.textContent = new Date().toLocaleDateString('he-IL', { weekday: 'long', day: 'numeric', month: 'long' }); let p = st.profile; age.value = p.age; weight.value = p.weight; height.value = p.height; goalWeight.value = p.goalWeight; gender.value = p.gender; activity.value = p.activity; goal.value = p.goal; if (p.saved) { let x = calcProfile(p); profileResult.innerHTML = `BMR: ${x.bmr}<br>יעד קלוריות: ${x.cal}<br>חלבון ${x.protein}ג׳ | פחמימה ${x.carbs}ג׳ | שומן ${x.fat}ג׳` } let t = totals(), g = st.targets; progress.innerHTML = prog('קלוריות', t.cal, g.calories, 'קק״ל', 'yellow') + prog('חלבון', t.p, g.protein, 'ג׳', 'green') + prog('פחמימה', t.c, g.carbs, 'ג׳', 'purple') + prog('שומן', t.f, g.fat, 'ג׳') + prog('ירקות', t.v, g.veg, 'ג׳', 'green') + prog('שתייה', t.w, g.water, 'מ״ל') + prog('אימון', t.burn, 250, 'קק״ל', 'yellow'); waterText.textContent = `${Math.round(t.w)} / ${g.water} מ״ל`; waterFill.style.width = Math.min(100, t.w / g.water * 100) + '%'; traffic.innerHTML = ['calories', 'protein', 'carbs', 'fat', 'veg', 'water'].map(k => light(k, t, g)).join(''); coach.textContent = coachMsg(t, g, p); let meals = { 'בוקר': { cal: 0, p: 0 }, 'צהריים': { cal: 0, p: 0 }, 'ערב': { cal: 0, p: 0 }, 'ביניים': { cal: 0, p: 0 }, 'לילה': { cal: 0, p: 0 } }; st.entries.forEach(e => { let m = e.meal || 'בוקר'; if (meals[m]) { meals[m].cal += e.cal; meals[m].p += e.p; } }); let mHtml = ''; for (let m in meals) { if (meals[m].cal > 0) { let pct = Math.min(100, meals[m].cal / Math.max(g.calories, 1) * 100); mHtml += `<div class=row style="margin-top:12px;margin-bottom:2px"><span>${m}</span><b>${Math.round(meals[m].cal)} קק״ל</b></div><div class=small style="margin-bottom:6px">חלבון: ${Math.round(meals[m].p)} ג׳</div><div class=bar style="height:6px"><div class="fill" style="width:${pct}%"></div></div>`; } } if (!mHtml) mHtml = '<div class=notice>עדיין לא הוזן אוכל היום.</div>'; document.getElementById('mealBreakdown').innerHTML = mHtml; entries.innerHTML = st.entries.length ? st.entries.map(e => `<div class=entry><div><b>${e.name}</b> <span class="small" style="background:#eef2ff;color:#3730a3;padding:2px 6px;border-radius:6px;font-size:11px">${e.meal || 'בוקר'}</span><div class=small>${e.amount}${e.unit == 'ml' ? ' מ״ל' : ' ג׳'} | ${Math.round(e.cal)} קק״ל | חלבון ${r(e.p)} | פחמימה ${r(e.c)} | שומן ${r(e.f)} | ירק ${Math.round(e.v)} | מים ${Math.round(e.w)}</div></div><button class=del onclick="delE(${e.id})">מחק</button></div>`).join('') : '<div class=notice>אין רשומות</div>'; workouts.innerHTML = st.workouts.length ? st.workouts.map(w => `<div class=entry><div><b>${w.name}</b><div class=small>${w.min} דקות | ${Math.round(w.cal)} קק״ל</div></div><button class=del onclick="delW(${w.id})">מחק</button></div>`).join('') : '<div class=notice>אין אימונים</div>'; chips.innerHTML = foods.slice(0, 18).map(f => `<button class=chip onclick="quick.value+=' ${f.a[0]} ';quick.focus()">${f.a[0]}</button>`).join(''); document.querySelectorAll('.meal-chip').forEach(c => c.classList.toggle('on', c.textContent === (st.currentMeal || 'בוקר'))); if (document.getElementById('coachStyle')) document.getElementById('coachStyle').value = p.coach || 'רגיל'; document.getElementById('stepsDisp').textContent = st.steps || 0; document.getElementById('weightsList').innerHTML = (st.weights || []).length ? st.weights.map((x, i) => `<div class=entry><div><b>${new Date(x.d).toLocaleDateString('he-IL')}</b> <span>${x.w} ק״ג</span></div><button class=del onclick="delWeight(${i})">מחק</button></div>`).join('') : '<div class=small>אין שקילות.</div>'; document.getElementById('dietList').innerHTML = (st.dietitian || []).length ? st.dietitian.map((x, i) => `<div class=entry style="flex-direction:column;align-items:start;gap:5px;width:100%"><b>${x.d}</b><div class=small style="white-space:pre-wrap;line-height:1.4">${x.txt}</div><button class=del style="align-self:end" onclick="delDiet(${i})">מחק</button></div>`).join('') : '<div class=small>אין רשומות דיאטנית.</div>'; if (typeof renderHydrationBalance === 'function') renderHydrationBalance(); renderFixedMeals();save() }
         function light(k, t, g) { let map = { calories: ['קלוריות', t.cal, g.calories], protein: ['חלבון', t.p, g.protein], carbs: ['פחמימה', t.c, g.carbs], fat: ['שומן', t.f, g.fat], veg: ['ירקות', t.v, g.veg], water: ['מים', t.w, g.water] }; let [name, u, target] = map[k], ratio = u / target, dot = '🟢', txt = 'טוב'; if (['calories', 'carbs', 'fat'].includes(k)) { if (ratio > .105 && false) { } if (ratio > 1.05) { dot = '🔴'; txt = 'חריגה' } else if (ratio > .9) { dot = '🟡'; txt = 'גבולי' } } else { if (ratio < .6) { dot = '🔴'; txt = 'חסר' } else if (ratio < .9) { dot = '🟡'; txt = 'להשלים' } } return `<div class=light><b>${name} ${dot}</b><div class=small>${txt} | ${Math.round(u)} / ${Math.round(target)}</div></div>` }
         const quotes = { 'אירה': { over: ['הופ הופ הופ יש לנו פה דובי! תבלע רוק מספיק להיום!', 'ממי, ראיתי מה אכלת עכשיו. עוד ביס אחד ואת/ה מתגלגל/ת מכאן.', 'אכלת יפה? עכשיו תסגור ת׳פה! חריגה רצינית!'], underPro: ['איפה החלבון שלך חמודי? אתה רוצה שהשרירים יימסו?', 'בלי חלבון אין תוצאות! קדימה לטרוף קוטג׳!'], good: ['מגיע לך מחיאת כף! עמדת ביעד כמו גדול/ה!', 'אלופה! מי יורד במשקל מי?!', 'יפה מאוד חמודי, תמשיך ככה!'], water: ['תשתה מים!! הגוף שלך יבש כמו הנגב!', 'מים מים מים!'] }, 'רסר': { over: ['20 שניות התגלגלת מהכורסה להליכה של 40 דקות! זוז!', 'מי אישר לך חריגה בקלוריות?! אתה מרותק למקרר ריק!', 'די להכניס לפה! פתח שעון, רד ל-50 שכיבות סמיכה!'], underPro: ['השרירים שלך בוכים! חסר חלבון במערכת! לאשר קבלת פקודה לאכול עוף!', 'חלבון חסר! קדימה להשלים או שאתה רץ סביב הבסיס!'], good: ['חייל! ביצועים תקינים! המשך בשגרת תזונה!', 'היום עמדת במשימה. מחר דורש יותר!', 'מצב תקין, אין חריגות. מחר השכמה למד״ס!'], water: ['מימייה מלאה פתח! אתה מיובש! תשתה מיד!'] }, 'גס': { over: ['יא שמן! מה זה הכמויות האלה? עשית חור בכיסא!', 'תפסיק לטחון יא חזיר! חרגת ברמות!', 'נראה לי התבלבלת, זה יומן תזונה, לא יומן השמנה! יא ג׳לי!', 'סגור תמקרר יא דובון אכפת לי!'], underPro: ['איך יגדל השריר עם תזונה של ציפור? תאכל חלבון!', 'אין לך מספיק חלבון אפילו בשביל להרים את השלט של הטלוויזיה.'], good: ['בסדר יא רזה, היום לא הגזמת. נראה אותך מחר.', 'וואלה סחטיין. פעם ראשונה שאתה לא בולס. תמשיך!'], water: ['שתה מים יא מתייבש, העור שלך נראה כמו קרפדה.'] }, 'משפטים': { all: ['קלוריות שורפים, לא סופרים.', 'אורח חיים זה לא דיאטה, זו בחירה יומיומית.', 'לא משמינים ממה שלא אוכלים, ולא מרזים מיום אחד.', 'הדרך חשובה יותר מהשקילה בבוקר.', 'הגוף שלך הוא המקדש שלך, תן לו דלק איכותי.', 'הזעה זה השומן שבוכה.', 'דיאטה קצרת טווח מביאה תוצאות קצרות טווח.', 'אל תחפש תירוצים, תחפש תוצאות.', 'כוח רצון הוא כמו שריר, תאמן אותו.', 'שינויים קטנים היום שווים תוצאות גדולות מחר.', 'אין קיצורי דרך למקום ששווה להגיע אליו.', 'התזונה היא 80% מההצלחה.', 'ארוחה גרועה אחת לא תהרוס, כמו שארוחה טובה אחת לא תתקן.', 'שתה כוס מים לפני כל החלטה.', 'אתה לא רעב, אתה רק משועמם.', 'לחזור לכושר זה קשה, להיות שמן זה קשה - תבחר את ה"קשה" שלך.', 'ההשקעה הכי טובה שלך היא בעצמך.', 'תהיה חזק יותר מהתירוץ הכי טוב שלך.', 'היום זה "מחר" שאמרת עליו אתמול.', 'עוף זה ציפור, פרה זה חיה, וספורט זה בריאות!', 'אתה לא הכלב שלך, אל תתגמל את עצמך עם אוכל.', 'אם אתה עייף מלהתחיל מחדש, תפסיק לוותר.', 'כל יום הוא דף חלק, תכתוב עליו משהו טוב.'] }, 'רגיל': { over: ['חריגה בקלוריות. מומלץ לאזן בארוחה הבאה עם חלבון רזה וירקות.', 'עברת את התקציב הקלורי היומי.'], underPro: ['חסר חלבון. בארוחה הבאה הוסף טונה, עוף, יוגורט או קוטג׳.', 'כמות החלבון נמוכה מהיעד.'], good: ['יום מאוזן. המשך כך!', 'מצוין, אתה עומד ביעדים להיום.', 'יחס מקרו טוב, עבודה יפה.'], water: ['שתייה נמוכה. מומלץ להשלים נוזלים בשעות הקרובות.'] } };
         function coachMsg(t, g, p) { let style = p.coach || 'רגיל'; let q = quotes[style] || quotes['רגיל']; let rnd = arr => arr[Math.floor(Math.random() * arr.length)]; if (style === 'משפטים') return rnd(q.all); if (t.cal > g.calories * 1.05) return rnd(q.over); if (t.w < g.water * 0.5) return rnd(q.water); if (t.p < g.protein * 0.6) return rnd(q.underPro); return rnd(q.good); }
-        function rememberRecent(e) {
-            let item = { name: e.name, amount: e.amount, unit: e.unit || 'g' };
-            st.recent = [item, ...(st.recent || []).filter(x => x.name !== item.name)].slice(0, 12);
+
+        function saveCurrentMealAsFixed() {
+            let items = (st.entries || []).filter(e => (e.meal || 'בוקר') === (st.currentMeal || 'בוקר'));
+            if (!items.length) { alert('אין פריטים בארוחה הנוכחית לשמירה'); return; }
+            let name = prompt('שם לארוחה הקבועה:', st.currentMeal || 'ארוחה קבועה');
+            if (!name) return;
+            st.fixedMeals = st.fixedMeals || [];
+            st.fixedMeals.unshift({
+                id: Date.now(),
+                name,
+                meal: st.currentMeal || 'בוקר',
+                items: items.map(e => ({...e, id: Date.now()+Math.random()})),
+                createdAt: new Date().toISOString()
+            });
+            save();
+            if (window.cloudSave) window.cloudSave();
+            render();
+            alert('הארוחה נשמרה כקבועה');
         }
-        function renderRecent() {
-            let box = document.getElementById('recentBox');
-            if(!box) return;
-            box.innerHTML = (st.recent && st.recent.length)
-                ? st.recent.map(x => `<button class="mini-btn" onclick="quick.value+=' ${x.name} ${Math.round(x.amount)} ';show('Food')">${x.name} ${Math.round(x.amount)}</button>`).join('')
-                : '<div class="notice">אין עדיין היסטוריה.</div>';
-        }
-        function saveFixedMeal() {
-            let last = st.entries.slice(0, 4);
-            if(!last.length){ alert('אין ארוחה לשמור'); return; }
-            let key = confirm('לשמור כארוחת בוקר? לחץ ביטול לשמור כצהריים') ? 'breakfast' : 'lunch';
-            st.fixedMeals = st.fixedMeals || {};
-            st.fixedMeals[key] = last.map(e => ({ name:e.name, amount:e.amount }));
-            save(); render(); alert('נשמר');
-        }
-        function addFixedMeal(key) {
-            let meal = st.fixedMeals && st.fixedMeals[key];
-            if(!meal || !meal.length){ alert('אין ארוחה קבועה שמורה'); return; }
-            meal.forEach(x => { let f=findFood(x.name); if(f) addEntry(f, x.amount); });
+
+        function loadFixedMeal(id) {
+            let fm = (st.fixedMeals || []).find(x => x.id == id);
+            if (!fm) return;
+            fm.items.forEach(item => {
+                st.entries.unshift({...item, id: Date.now()+Math.random(), meal: st.currentMeal || fm.meal || 'בוקר'});
+            });
+            save();
+            if (window.cloudSave) window.cloudSave();
             render();
         }
+
+        function deleteFixedMeal(id) {
+            st.fixedMeals = (st.fixedMeals || []).filter(x => x.id != id);
+            save();
+            if (window.cloudSave) window.cloudSave();
+            render();
+        }
+
         function clearFixedMeals() {
-            if(confirm('לאפס ארוחות קבועות?')){ st.fixedMeals = {}; save(); render(); }
+            if (!confirm('למחוק את כל הארוחות הקבועות?')) return;
+            st.fixedMeals = [];
+            save();
+            if (window.cloudSave) window.cloudSave();
+            render();
         }
-        function renderFixed() {
+
+        function renderFixedMeals() {
             let box = document.getElementById('fixedMealsBox');
-            if(!box) return;
-            let b = st.fixedMeals?.breakfast?.map(x=>x.name+' '+Math.round(x.amount)).join(', ') || 'לא נשמר';
-            let l = st.fixedMeals?.lunch?.map(x=>x.name+' '+Math.round(x.amount)).join(', ') || 'לא נשמר';
-            box.textContent = 'בוקר: '+b+'\nצהריים: '+l;
+            if (!box) return;
+            let arr = st.fixedMeals || [];
+            if (!arr.length) { box.textContent = 'אין ארוחות קבועות עדיין.'; return; }
+            box.innerHTML = arr.map(m => {
+                let cal = m.items.reduce((s,e)=>s+(Number(e.cal)||0),0);
+                let pro = m.items.reduce((s,e)=>s+(Number(e.p)||0),0);
+                return `<div class=entry><div><b>${m.name}</b><div class=small>${m.items.length} פריטים | ${Math.round(cal)} קק״ל | חלבון ${Math.round(pro)} ג׳</div></div><div><button class=chip onclick="loadFixedMeal(${m.id})">טען</button><button class=del onclick="deleteFixedMeal(${m.id})">מחק</button></div></div>`;
+            }).join('');
         }
-        function addWater(x){addDrink('water',x)} function delE(id) { st.entries = st.entries.filter(e => e.id != id); render() } function delW(id) { st.workouts = st.workouts.filter(e => e.id != id); render() } function resetDay() { if (confirm('לאפס יום?')) { st.water = 0; st.steps = 0; st.entries = []; st.workouts = []; render() } }
+
+        function addWater(x) { st.water += x; render() } function delE(id) { st.entries = st.entries.filter(e => e.id != id); render() } function delW(id) { st.workouts = st.workouts.filter(e => e.id != id); render() } function resetDay() { if (confirm('לאפס יום?')) { st.water = 0; st.steps = 0; st.entries = []; st.workouts = []; render() } }
         function addSteps() { let s = n(trackSteps.value); if (s > 0) { st.steps = (st.steps || 0) + s; trackSteps.value = ''; save(); render(); msg('צעדים נוספו!', 'ok'); } }
         function addWeight() { let d = trackDate.value, w = n(trackWeight.value); if (d && w > 0) { st.weights.push({ d, w }); st.weights.sort((a, b) => new Date(b.d) - new Date(a.d)); trackWeight.value = ''; save(); render(); msg('שקילה נשמרה', 'ok'); } }
         function delWeight(i) { st.weights.splice(i, 1); save(); render(); }
@@ -672,7 +756,7 @@ st.recent = st.recent || []; st.fixedMeals = st.fixedMeals || {}; st.profile = {
         function norm(txt) { return heb(txt).split(/\s+/).map(clean).filter(x => x && !stop.has(x)).join(' ') }
         const UNITS = { 'כפית': 5, 'כפיות': 5, 'כף': 15, 'כפות': 15, 'כוס': 240, 'כוסות': 240 };
         function addQuick() { let txt = norm(quick.value); let tok = txt.split(/\s+/).filter(Boolean); let parsed = []; for (let i = 0; i < tok.length; i++) { let n = Number(tok[i]); if (!isNaN(n)) { let mult = 1, unit = null; if (i + 1 < tok.length && UNITS[tok[i + 1]]) { mult = UNITS[tok[i + 1]]; unit = tok[i + 1]; i++; } parsed.push({ type: 'num', val: n * mult, hasUnit: !!unit, unit: unit }); } else { parsed.push({ type: 'word', val: tok[i] }); } } let groups = []; let curWords = []; for (let p of parsed) { if (p.type === 'word') { curWords.push(p.val); } else { if (curWords.length) { groups.push({ type: 'food', val: curWords.join(' ') }); curWords = []; } groups.push(p); } } if (curWords.length) groups.push({ type: 'food', val: curWords.join(' ') }); for (let i = 0; i < groups.length; i++) { if (groups[i].type === 'num') { let left = (i - 1 >= 0 && groups[i - 1].type === 'food') ? groups[i - 1] : null; let right = (i + 1 < groups.length && groups[i + 1].type === 'food') ? groups[i + 1] : null; if (left && right) { if (groups[i].hasUnit && groups[i].unit !== 'גרם') right.amt = groups[i].val; else left.amt = groups[i].val; } else if (left) left.amt = groups[i].val; else if (right) right.amt = groups[i].val; } } let added = [], bad = []; for (let g of groups) { if (g.type === 'food') { let f = findFood(g.val); if (f) { let amt = g.amt || 100; addEntry(f, amt); added.push(`${f.name} ${amt}`); } else { bad.push(g.val); } } } if (added.length) { msg('נוסף: ' + added.join(', ') + (bad.length ? '\nלא זוהה: ' + bad.join(', ') : ''), bad.length ? 'err' : 'ok'); quick.value = ''; render(); } else { msg('לא זוהה. נסה: עוף 150 וחצי כפית שמן', 'err'); } }
-        function addEntry(f, amt) { let q = amt / 100; let e={ id: Date.now() + Math.random(), name: f.name, amount: amt, unit: f.u, cal: f.cal * q, p: f.p * q, c: f.c * q, f: f.f * q, v: f.v * q, w: f.w ? amt * f.w / 100 : 0, meal: st.currentMeal || 'בוקר' }; st.entries.unshift(e); rememberRecent(e); save(); } function addManual() { addEntry({ name: mName.value || 'ידני', u: 'g', cal: n(mCal.value), p: n(mPro.value), c: n(mCarb.value), f: n(mFat.value), v: n(mVeg.value), w: 0 }, n(mAmount.value) || 100); render() } function msg(t, type) { if (!t) { document.getElementById('msg').classList.add('hide'); return } document.getElementById('msg').textContent = t; document.getElementById('msg').className = 'notice ' + type }
+        function addEntry(f, amt) { let q = amt / 100; st.entries.unshift({ id: Date.now() + Math.random(), name: f.name, amount: amt, unit: f.u, cal: f.cal * q, p: f.p * q, c: f.c * q, f: f.f * q, v: f.v * q, w: f.w ? amt * f.w / 100 : 0, meal: st.currentMeal || 'בוקר' }) } function addManual() { addEntry({ name: mName.value || 'ידני', u: 'g', cal: n(mCal.value), p: n(mPro.value), c: n(mCarb.value), f: n(mFat.value), v: n(mVeg.value), w: 0 }, n(mAmount.value) || 100); render() } function msg(t, type) { if (!t) { document.getElementById('msg').classList.add('hide'); return } document.getElementById('msg').textContent = t; document.getElementById('msg').className = 'notice ' + type }
         function suggest() {
             let last = clean(quick.value.split(/\s+/).pop());
             if (!last || !isNaN(Number(last))) { sbox.classList.add('hide'); return }
@@ -683,99 +767,337 @@ st.recent = st.recent || []; st.fixedMeals = st.fixedMeals || {}; st.profile = {
             sbox.classList.toggle('hide', !m.length);
         }
         function pick(x) { let p = quick.value.trim().split(/\s+/); p[p.length - 1] = x; quick.value = p.join(' ') + ' '; sbox.classList.add('hide'); quick.focus() }
-        function getFoodCandidatesForAi(text) {
-            let words = norm(text).split(/\s+/).filter(x => x && isNaN(Number(x)));
-            let pool = [...foods, ...(mabatDB || [])];
-            let scored = pool.map(f => {
-                let hay = clean([f.name, ...(f.a || [])].join(' '));
-                let score = words.reduce((s,w)=>s+(hay.includes(w)?1:0),0);
-                return {f, score};
-            }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,80).map(x=>x.f.name);
-            return [...new Set(scored)];
+        
+        let pendingAiFoods = [];
+
+        function allFoods() {
+            return [...foods, ...(mabatDB || [])];
         }
 
-        async function callGeminiVoice(transcript) {
+        function scoreFood(q, f) {
+            q = clean(q);
+            if (!q) return 0;
+            let names = [f.name, ...(f.a || [])].map(clean);
+            let best = 0;
+            names.forEach(a => {
+                if (a === q) best = Math.max(best, 120);
+                else if (a.includes(q) || q.includes(a)) best = Math.max(best, 95);
+                else {
+                    q.split(/\s+/).filter(Boolean).forEach(w => {
+                        if (a.includes(w)) best += 18;
+                    });
+                }
+            });
+            return best;
+        }
+
+        function findMatches(q, limit = 8) {
+            return allFoods().map(f => ({ f, s: scoreFood(q, f) }))
+                .filter(x => x.s > 25)
+                .sort((a, b) => b.s - a.s)
+                .slice(0, limit)
+                .map(x => x.f);
+        }
+
+        function unitToGrams(foodName, amount, unit) {
+            amount = n(amount) || 1;
+            let q = clean(foodName);
+            const isLiquid = /חלב|מים|מיץ|קולה|תה|קפה|משקה|יוגורט/.test(q);
+            const table = {
+                g: 1,
+                ml: 1,
+                cup: isLiquid ? 240 : (/אורז|פסטה|פתיתים|קוסקוס|קינואה/.test(q) ? 160 : 120),
+                tbsp: /שמן|טחינה|דבש|סילאן|חמאת/.test(q) ? 15 : 12,
+                tsp: /שמן|טחינה|דבש|סוכר|מלח|סרירצה|רוטב/.test(q) ? 5 : 4,
+                unit: /ביצה/.test(q) ? 60 : /בננה/.test(q) ? 120 : /תפוח/.test(q) ? 150 : 100,
+                slice: /לחם/.test(q) ? 30 : /גבינה/.test(q) ? 25 : 30
+            };
+            return Math.round(amount * (table[unit] || 1));
+        }
+
+        function manualConvertedAmount() {
+            if (!document.getElementById('mUnit')) return n(mAmount.value) || 100;
+            const converted = unitToGrams(mName.value, mAmount.value, mUnit.value);
+            mConverted.value = converted + (mUnit.value === 'ml' ? ' מ״ל' : ' גרם/מ״ל');
+            return converted;
+        }
+
+        function manualLookupPreview() {
+            const name = (mName.value || '').trim();
+            const converted = manualConvertedAmount();
+            manualLookupBox.classList.remove('hide');
+            if (!name) {
+                manualLookupBox.className = 'notice err';
+                manualLookupBox.textContent = 'רשום שם מאכל קודם.';
+                return;
+            }
+            const matches = findMatches(name, 8);
+            if (!matches.length) {
+                manualLookupBox.className = 'notice warn';
+                manualLookupBox.textContent = 'לא נמצא במאגר. בשמירה האפליקציה תנסה Gemini אם יש API Key.';
+                return;
+            }
+            manualLookupBox.className = 'notice ok';
+            manualLookupBox.innerHTML =
+                `<b>נמצאו במאגר:</b><br>כמות מחושבת: ${converted} גרם/מ״ל<br><br>` +
+                matches.map(f => `<button class="chip" onclick="fillManualFromFood('${String(f.name).replace(/'/g, "\\'")}')">${f.name} - ${Math.round(f.cal)} קק״ל ל-100</button>`).join('');
+        }
+
+        function fillManualFromFood(foodName) {
+            const f = allFoods().find(x => x.name === foodName);
+            if (!f) return;
+            mName.value = f.name;
+            mCal.value = r(f.cal || 0);
+            mPro.value = r(f.p || 0);
+            mCarb.value = r(f.c || 0);
+            mFat.value = r(f.f || 0);
+            mVeg.value = r(f.v || 0);
+            manualConvertedAmount();
+            manualLookupBox.className = 'notice ok';
+            manualLookupBox.innerHTML = `נבחר מהמאגר: <b>${f.name}</b>. לחץ שמור לארוחה.`;
+        }
+
+        async function geminiFoodText(text) {
             let key = st.profile.gemini;
-            if (!key) throw new Error('missing-gemini-key');
+            if (!key) throw new Error('אין Gemini API Key');
+            const prompt = `אתה מנוע תזונה בעברית.
+פרק את הטקסט הבא לפריטי מזון וכמויות:
+${text}
 
-            let candidates = getFoodCandidatesForAi(transcript);
-            let prompt =
-`אתה מנוע פירוק תזונה בעברית.
-המשתמש אמר בקול: "${transcript}"
-
-בחר מאכלים מתוך רשימת המועמדים בלבד אם אפשר:
-${candidates.join(', ')}
-
-החזר JSON חוקי בלבד, בלי הסברים ובלי markdown:
+החזר JSON חוקי בלבד, בלי markdown:
 [
-  {"name":"שם מאכל מתוך הרשימה או שם ברור בעברית","amount":100,"unit":"g"}
+ {"name":"שם מאכל בעברית","amount":100,"unit":"g","cal":קלוריות לכמות,"p":חלבון,"c":פחמימות,"f":שומן,"v":0}
 ]
 
 כללים:
-- אם נאמר "חלב 3%" בחר חלב 3%.
-- אם נאמר "אורז" הצע אורז מבושל אלא אם נאמר מלא/בסמטי.
-- אם נאמר כוס חלב, amount=240 ו unit="ml".
-- אם נאמר כפית שמן, amount=5.
-- אם נאמר כף שמן, amount=15.
-- אם אין כמות, amount=100.
-- אם יש כמה מאכלים, החזר כמה אובייקטים.`;
-
-            let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
+- קבל יחידות: גרם, מ״ל, כף, כפית, כוס, חצי כוס, יחידה, פרוסה.
+- אם יש כף/כפית/כוס, המר לכמות בגרם או מ״ל לפי המאכל.
+- חלב 3% / 1% לפי מה שכתוב.
+- ביצה L = כ-60 גרם.
+- החזר cal/p/c/f לכמות עצמה, לא ל-100 גרם.`;
+            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
             });
-            let data = await res.json();
+            const data = await res.json();
             if (data.error) throw new Error(data.error.message);
+            const out = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+            return JSON.parse(out.replace(/```json/g, '').replace(/```/g, '').trim());
+        }
 
-            let text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-            let json = text.replace(/```json/g, '').replace(/```/g, '').trim();
-            let arr = JSON.parse(json);
-            if (!Array.isArray(arr)) arr = [arr];
+        async function addManualSmart() {
+            const name = (mName.value || '').trim();
+            const amount = manualConvertedAmount();
+            if (!name) return msg('רשום שם מאכל', 'err');
 
-            let added = [], missing = [];
-            arr.forEach(x => {
-                let f = findFood(x.name);
-                if (!f) {
-                    let m = getFoodCandidatesForAi(x.name)[0];
-                    if (m) f = findFood(m);
-                }
-                if (f) {
-                    let amt = Number(x.amount) || 100;
-                    addEntry(f, amt);
-                    added.push(`${f.name} ${amt}${x.unit === 'ml' ? ' מ״ל' : ' ג׳'}`);
-                } else {
-                    missing.push(x.name);
-                }
-            });
-
-            if (added.length) {
-                quick.value = '';
-                msg('Gemini זיהה והוסיף:\n' + added.join('\n') + (missing.length ? '\nלא נמצא במאגר: ' + missing.join(', ') : ''), missing.length ? 'err' : 'ok');
+            const hasManual = n(mCal.value) || n(mPro.value) || n(mCarb.value) || n(mFat.value) || n(mVeg.value);
+            if (hasManual) {
+                addEntry({ name, u: mUnit && mUnit.value === 'ml' ? 'ml' : 'g', cal: n(mCal.value), p: n(mPro.value), c: n(mCarb.value), f: n(mFat.value), v: n(mVeg.value), w: 0 }, amount);
+                msg('נשמר לפי הערכים הידניים.', 'ok');
                 render();
-                return true;
+                return;
             }
-            throw new Error('Gemini לא החזיר מאכל שנמצא במאגר');
+
+            let f = findFood(name);
+            if (f) {
+                addEntry(f, amount);
+                msg(`נמצא במאגר ונשמר: ${f.name}`, 'ok');
+                render();
+                return;
+            }
+
+            try {
+                msg('לא נמצא במאגר. שולח ל-Gemini...', 'ok');
+                let arr = await geminiFoodText(`${name} ${amount} גרם`);
+                if (!Array.isArray(arr)) arr = [arr];
+                showAiEditableFoods(arr);
+            } catch (e) {
+                msg('לא נמצא במאגר ו-Gemini לא עבד: ' + e.message, 'err');
+            }
         }
 
-        async function handleVoiceTranscript(tr) {
-            quick.value = tr;
-            let key = st.profile.gemini;
-            if (key) {
-                msg('זוהה: ' + tr + '\nשולח ל-Gemini כדי לבחור מהמאגר...', 'ok');
-                try {
-                    await callGeminiVoice(tr);
-                    return;
-                } catch (err) {
-                    console.warn('Gemini voice failed, fallback local:', err);
-                    msg('Gemini לא הצליח לפרק את ההקלטה. עובר לפירוק מקומי.\n' + tr, 'err');
-                }
-            }
-            quick.value = norm(tr);
-            suggest();
-            msg('זוהה: ' + tr + '\nאחרי ניקוי: ' + quick.value + '\nלחץ הוסף לאישור', 'ok');
+        function parseHebrewAmountWords(text) {
+            return String(text || '')
+                .replace(/חצי כוס/g, '0.5 כוס')
+                .replace(/חצי כפית/g, '0.5 כפית')
+                .replace(/חצי כף/g, '0.5 כף')
+                .replace(/כוס וחצי/g, '1.5 כוס')
+                .replace(/כף וחצי/g, '1.5 כף')
+                .replace(/כפית וחצי/g, '1.5 כפית')
+                .replace(/שתי/g, '2').replace(/שתיים/g, '2').replace(/שניים/g, '2')
+                .replace(/אחד/g, '1').replace(/אחת/g, '1')
+                .replace(/שלוש/g, '3').replace(/ארבע/g, '4').replace(/חמש/g, '5')
+                .replace(/שש/g, '6').replace(/שבע/g, '7').replace(/שמונה/g, '8').replace(/תשע/g, '9');
         }
 
+        function extractFoodLine(line) {
+            let raw = parseHebrewAmountWords(line).trim();
+            let unit = 'g', amount = 100;
+            const patterns = [
+                { re: /(\d+(?:\.\d+)?)\s*(גרם|גרמים|ג׳|g)\b/i, unit: 'g' },
+                { re: /(\d+(?:\.\d+)?)\s*(מ״ל|מל|מיל|ml)\b/i, unit: 'ml' },
+                { re: /(\d+(?:\.\d+)?)\s*(כוס|כוסות)\b/i, unit: 'cup' },
+                { re: /(\d+(?:\.\d+)?)\s*(כף|כפות)\b/i, unit: 'tbsp' },
+                { re: /(\d+(?:\.\d+)?)\s*(כפית|כפיות)\b/i, unit: 'tsp' },
+                { re: /(\d+(?:\.\d+)?)\s*(פרוסה|פרוסות)\b/i, unit: 'slice' },
+                { re: /(\d+(?:\.\d+)?)\s*(יחידה|יחידות)\b/i, unit: 'unit' }
+            ];
+            for (const p of patterns) {
+                const m = raw.match(p.re);
+                if (m) { amount = Number(m[1]); unit = p.unit; raw = raw.replace(m[0], ' '); break; }
+            }
+            if (/ביצה/.test(raw) && !line.match(/\d/)) { amount = 1; unit = 'unit'; }
+            const name = raw.replace(/\s+/g, ' ').trim();
+            return { name, amount, unit, grams: unitToGrams(name, amount, unit), original: line };
+        }
+
+        function parseBulkLocal() {
+            const text = (bulkFoodText.value || '').trim();
+            if (!text) return msg('הדבק ארוחה או כמה פריטים קודם', 'err');
+            const lines = text.split(/\n|,/).map(x => x.trim()).filter(Boolean);
+            let added = [], missing = [];
+            lines.forEach(line => {
+                const p = extractFoodLine(line);
+                const f = findFood(p.name);
+                if (f) {
+                    addEntry(f, p.grams);
+                    added.push(`${f.name} ${p.grams}`);
+                } else missing.push(line);
+            });
+            msg((added.length ? 'נוסף מהמאגר:\n' + added.join('\n') : '') + (missing.length ? '\nלא נמצא, אפשר AI:\n' + missing.join('\n') : ''), missing.length ? 'warn' : 'ok');
+            render();
+        }
+
+        async function parseBulkWithAi() {
+            const text = (bulkFoodText.value || mName.value || quick.value || '').trim();
+            if (!text) return msg('אין טקסט לשליחה ל-AI', 'err');
+            try {
+                msg('שולח ל-Gemini לפירוק מלא...', 'ok');
+                let arr = await geminiFoodText(text);
+                if (!Array.isArray(arr)) arr = [arr];
+                showAiEditableFoods(arr);
+            } catch (e) {
+                msg('AI לא הצליח לפרק: ' + e.message, 'err');
+            }
+        }
+
+        async function searchManualWithAi() {
+            const name = (mName.value || '').trim();
+            if (!name) return msg('רשום מאכל או הדבק ארוחה מלאה', 'err');
+            try {
+                msg('שולח ישירות ל-AI...', 'ok');
+                let arr = await geminiFoodText(`${name} ${manualConvertedAmount()} גרם`);
+                if (!Array.isArray(arr)) arr = [arr];
+                showAiEditableFoods(arr);
+            } catch (e) {
+                msg('AI לא הצליח: ' + e.message, 'err');
+            }
+        }
+
+        function showAiEditableFoods(items) {
+            pendingAiFoods = (items || []).map((x, i) => ({
+                id: i,
+                name: x.name || 'מזון',
+                amount: n(x.amount) || 100,
+                unit: x.unit || 'g',
+                cal: n(x.cal),
+                p: n(x.p),
+                c: n(x.c),
+                f: n(x.f),
+                v: n(x.v || 0)
+            }));
+            aiEditBox.classList.remove('hide');
+            aiEditBox.innerHTML = '<b>בדוק וערוך לפני שמירה:</b><br>' + pendingAiFoods.map((x, i) => `
+                <div class="entry" style="display:block">
+                    <b>${x.name}</b>
+                    <label>כמות</label>
+                    <input value="${Math.round(x.amount)}" oninput="updateAiAmount(${i},this.value)">
+                    <div class="small" id="aiM${i}">${Math.round(x.cal)} קק״ל | חלבון ${r(x.p)} | פחמימה ${r(x.c)} | שומן ${r(x.f)}</div>
+                </div>`).join('') + '<button onclick="confirmAiFoods()">שמור לארוחה</button>';
+        }
+
+        function updateAiAmount(i, val) {
+            let x = pendingAiFoods[i], old = x.amount || 100, nu = n(val) || old, fac = nu / old;
+            x.amount = nu; x.cal *= fac; x.p *= fac; x.c *= fac; x.f *= fac; x.v *= fac;
+            document.getElementById('aiM' + i).textContent = `${Math.round(x.cal)} קק״ל | חלבון ${r(x.p)} | פחמימה ${r(x.c)} | שומן ${r(x.f)}`;
+        }
+
+        function confirmAiFoods() {
+            pendingAiFoods.forEach(x => {
+                let q = x.amount / 100;
+                addEntry({ name: x.name + ' (AI)', u: x.unit === 'ml' ? 'ml' : 'g', cal: x.cal / q, p: x.p / q, c: x.c / q, f: x.f / q, v: x.v / q, w: 0 }, x.amount);
+            });
+            pendingAiFoods = [];
+            aiEditBox.classList.add('hide');
+            render();
+        }
+
+        function drinkMeta(type) {
+            return {
+                water: ['מים', 1, 0, 0, 0, 0, 100],
+                tea: ['תה/קפה ללא סוכר', .9, 2, 0, 0, 0, 90],
+                zero: ['זירו', .85, 1, 0, 0, 0, 70],
+                milk3: ['חלב 3%', .85, 61, 3.3, 4.7, 3, 70],
+                juice: ['מיץ', .75, 45, 0, 11, 0, 45]
+            }[type] || ['מים', 1, 0, 0, 0, 0, 100];
+        }
+
+        function addDrink(type, amount) {
+            const d = drinkMeta(type), hyd = amount * d[1];
+            st.water += hyd;
+            st.lastDrinkAt = new Date().toISOString();
+            st.drinks = st.drinks || [];
+            st.drinks.unshift({ type, name: d[0], amount, hydration: hyd, quality: d[6] });
+            if (d[2] > 0) addEntry({ name: d[0], u: 'ml', cal: d[2], p: d[3], c: d[4], f: d[5], v: 0, w: hyd }, amount);
+            render();
+        }
+
+        function renderHydrationBalance() {
+            if (!document.getElementById('hydrationBalance')) return;
+            const drinks = st.drinks || [];
+            const totalHyd = drinks.reduce((s, x) => s + (x.hydration || 0), 0);
+            const score = totalHyd ? Math.round(drinks.reduce((s, x) => s + (x.hydration || 0) * (x.quality || 70), 0) / totalHyd) : 0;
+            const last = st.lastDrinkAt ? Math.round((Date.now() - new Date(st.lastDrinkAt).getTime()) / 60000) : null;
+            hydrationBalance.innerHTML = `מאזן שתייה: ${Math.round(st.water || 0)} / ${st.targets.water} מ״ל<br>ציון איכות שתייה: <span class="qualityScore">${score}</span>/100<br>${last === null ? 'לא הוזנה שתייה עדיין' : 'שתייה אחרונה לפני ' + last + ' דקות'}`;
+        }
+
+        function playHydrationSound() {
+            try {
+                const C = window.AudioContext || window.webkitAudioContext;
+                const ctx = new C(), o = ctx.createOscillator(), g = ctx.createGain();
+                o.frequency.value = 740; g.gain.value = .08; o.connect(g); g.connect(ctx.destination); o.start();
+                setTimeout(() => { o.stop(); ctx.close(); }, 260);
+            } catch (e) {}
+        }
+
+        function testHydrationReminder() {
+            playHydrationSound();
+            alert('בדיקת צליל הופעלה');
+        }
+
+        async function handleVoiceSmartText(text) {
+            quick.value = text;
+            const p = extractFoodLine(text);
+            const f = findFood(p.name);
+            if (f) {
+                addEntry(f, p.grams);
+                msg('נוסף מהמאגר לפי קול: ' + f.name, 'ok');
+                render();
+                return;
+            }
+            try {
+                let arr = await geminiFoodText(text);
+                if (!Array.isArray(arr)) arr = [arr];
+                showAiEditableFoods(arr);
+                msg('Gemini פירק את ההקלטה לעריכה ואישור.', 'ok');
+            } catch (e) {
+                msg('לא נמצא במאגר ו-AI לא עבד: ' + e.message, 'err');
+            }
+        }
+
+        function voice_old() { let SR = window.SpeechRecognition || window.webkitSpeechRecognition; if (!SR) { msg('הדפדפן לא תומך בזיהוי קולי. השתמש בהקלדה.', 'err'); return } if (recording) { rec.abort(); return } rec = new SR(); rec.lang = 'he-IL'; rec.interimResults = false; recording = true; mic.classList.add('rec'); mic.textContent = '⏹️'; msg('מקליט... אמור: אורז מאה טונה תשעים ושש', ''); rec.onresult = e => { let tr = e.results[0][0].transcript; quick.value = norm(tr); msg('זוהה: ' + tr + '\nאחרי ניקוי: ' + quick.value + '\nלחץ הוסף לאישור', 'ok') }; rec.onend = () => { recording = false; mic.classList.remove('rec'); mic.textContent = '🎙️' }; rec.start() }
+        
         function voice() {
             let SR = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (!SR) { msg('הדפדפן לא תומך בזיהוי קולי. השתמש בהקלדה.', 'err'); return }
@@ -786,15 +1108,12 @@ ${candidates.join(', ')}
             recording = true;
             mic.classList.add('rec');
             mic.textContent = '⏹️';
-            msg('מקליט... אמור: אורז 100, טונה 96, חלב 3% כוס', '');
-            rec.onresult = e => {
-                let tr = e.results[0][0].transcript;
-                handleVoiceTranscript(tr);
-            };
-            rec.onerror = e => msg('שגיאת מיקרופון: ' + (e.error || 'לא ידוע'), 'err');
+            msg('מקליט... אפשר לומר: פיתה 105 גרם / חלב 3% כוס / שתי כפות טחינה', '');
+            rec.onresult = e => handleVoiceSmartText(e.results[0][0].transcript);
             rec.onend = () => { recording = false; mic.classList.remove('rec'); mic.textContent = '🎙️' };
             rec.start();
         }
+
         function addWorkout() { let min = n(wMin.value), type = wType.value, int = wInt.value, base = { walk: 4, strength: 5, bike: 6, other: 4 }[type], mult = { light: .75, medium: 1, hard: 1.25 }[int], names = { walk: 'הליכה', strength: 'כוח', bike: 'אופניים', other: 'אחר' }; st.workouts.unshift({ id: Date.now(), name: names[type], min, cal: min * base * mult }); render() }
 
         async function uploadImage(e, isRecipe) {
@@ -858,10 +1177,8 @@ ${candidates.join(', ')}
             } else {
                 let json = text.replace(/```json/g, '').replace(/```/g, '').trim();
                 let obj = JSON.parse(json);
-                let q = obj.amount / 100;
-                let f = { name: obj.name + ' (AI)', u: 'g', cal: obj.cal / q, p: obj.p / q, c: obj.c / q, f: obj.f / q, v: 0, w: 0 };
-                addEntry(f, obj.amount);
-                msg(`זוהה: ${obj.name} (${obj.amount}ג') נוסף בהצלחה!`, 'ok');
+                if (!Array.isArray(obj)) obj = [obj];
+                showAiEditableFoods(obj);
                 render();
             }
         }
@@ -869,84 +1186,87 @@ ${candidates.join(', ')}
         if (st.profile.saved) show('Today');
         if (document.getElementById('geminiApi')) document.getElementById('geminiApi').value = st.profile.gemini || '';
         if (mabatDB.length > 0 && document.getElementById('mabatBtn')) {
-            document.getElementById('mabatBtn').textContent = `המאגר מסונכרן (${mabatDB.length} מתוך יעד 4,500 פריטים)`;
+            document.getElementById('mabatBtn').textContent = `המאגר מסונכרן (${mabatDB.length} פריטים)`;
         }
     </script>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAkF2i0utPJayFqhzqWEmGh2hIUGhMJZ2o",
-            authDomain: "healthylife-a054b.firebaseapp.com",
-            projectId: "healthylife-a054b",
-            storageBucket: "healthylife-a054b.firebasestorage.app",
-            messagingSenderId: "307773262968",
-            appId: "1:307773262968:web:7fdc12c7789f3d447ab18d"
-        };
+const firebaseConfig = {
+  apiKey: "AIzaSyAkF2i0utPJayFqhzqWEmGh2hIUGhMJZ2o",
+  authDomain: "healthylife-a054b.firebaseapp.com",
+  projectId: "healthylife-a054b",
+  storageBucket: "healthylife-a054b.firebasestorage.app",
+  messagingSenderId: "307773262968",
+  appId: "1:307773262968:web:7fdc12c7789f3d447ab18d"
+};
 
-        const fbApp = initializeApp(firebaseConfig);
-        const auth = getAuth(fbApp);
-        const db = getFirestore(fbApp);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+let currentFirebaseUser = null;
 
-        function setAuthStatus(text, ok=false){
-            const el = document.getElementById('authStatus');
-            if(!el) return;
-            el.textContent = text;
-            el.className = ok ? 'notice statusOk' : 'notice statusBad';
-        }
+function setAuthStatus(text, ok=false) {
+  const el = document.getElementById('authStatus');
+  if (!el) return;
+  el.textContent = text;
+  el.className = ok ? 'notice ok' : 'notice err';
+}
 
-        window.registerUser = async function(email,password){
-            try{
-                if(!email || !password){ alert('חסר אימייל או סיסמה'); return; }
-                await createUserWithEmailAndPassword(auth,email,password);
-                setAuthStatus('נרשמת בהצלחה',true);
-            }catch(e){ setAuthStatus('שגיאה: '+e.message,false); }
-        }
-        window.loginUser = async function(email,password){
-            try{
-                if(!email || !password){ alert('חסר אימייל או סיסמה'); return; }
-                const u = await signInWithEmailAndPassword(auth,email,password);
-                setAuthStatus('מחובר: '+u.user.email,true);
-            }catch(e){ setAuthStatus('שגיאה: '+e.message,false); }
-        }
-        window.logoutUser = async function(){
-            await signOut(auth);
-            setAuthStatus('לא מחובר',false);
-        }
-        window.cloudSave = function(){
-            clearTimeout(saveTimer);
-            saveTimer = setTimeout(async()=>{
-                if(!currentUser) return;
-                try{
-                    await setDoc(doc(db,'users',currentUser.uid),{data:st,updatedAt:new Date().toISOString()},{merge:true});
-                }catch(e){ console.error('cloud save failed', e); }
-            },700);
-        }
-        onAuthStateChanged(auth, async user=>{
-            currentUser = user;
-            if(user){
-                setAuthStatus('מחובר: '+user.email,true);
-                try{
-                    const ref = doc(db,'users',user.uid);
-                    const snap = await getDoc(ref);
-                    if(snap.exists() && snap.data().data){
-                        st = {...base, ...snap.data().data};
-                        st.recent = st.recent || [];
-                        st.fixedMeals = st.fixedMeals || {};
-                        localStorage.setItem(KEY, JSON.stringify(st));
-                        render();
-                    }else{
-                        await setDoc(ref,{email:user.email,data:st,createdAt:new Date().toISOString()},{merge:true});
-                    }
-                }catch(e){ console.error('cloud load failed', e); setAuthStatus('מחובר, אבל טעינת ענן נכשלה: '+e.message,false); }
-            }else{
-                setAuthStatus('לא מחובר',false);
-            }
-        });
-    </script>
+window.registerUser = async function(email,password){
+  try{
+    if(!email || !password) return alert('חסר אימייל או סיסמה');
+    await createUserWithEmailAndPassword(auth,email,password);
+    setAuthStatus('נרשמת בהצלחה', true);
+  }catch(e){ setAuthStatus(e.message, false); }
+}
+
+window.loginUser = async function(email,password){
+  try{
+    if(!email || !password) return alert('חסר אימייל או סיסמה');
+    await signInWithEmailAndPassword(auth,email,password);
+  }catch(e){ setAuthStatus(e.message, false); }
+}
+
+window.logoutUser = async function(){
+  await signOut(auth);
+}
+
+window.cloudSave = function(){
+  clearTimeout(window.__cloudSaveTimer);
+  window.__cloudSaveTimer = setTimeout(async()=>{
+    if(!currentFirebaseUser || typeof st === 'undefined') return;
+    try{
+      await setDoc(doc(db,'users',currentFirebaseUser.uid),{
+        email: currentFirebaseUser.email,
+        data: st,
+        updatedAt: new Date().toISOString()
+      }, { merge:true });
+    }catch(e){ console.error('cloud save failed', e); }
+  }, 800);
+}
+
+onAuthStateChanged(auth, async user=>{
+  currentFirebaseUser = user;
+  if(!user){ setAuthStatus('לא מחובר', false); return; }
+  setAuthStatus('מחובר: '+user.email, true);
+  try{
+    const ref = doc(db,'users',user.uid);
+    const snap = await getDoc(ref);
+    if(snap.exists() && snap.data().data){
+      Object.assign(st, snap.data().data);
+      localStorage.setItem(KEY, JSON.stringify(st));
+      render();
+    }else{
+      await setDoc(ref,{email:user.email,data:st,createdAt:new Date().toISOString()},{merge:true});
+    }
+  }catch(e){ console.error(e); setAuthStatus('מחובר, אך טעינת ענן נכשלה', false); }
+});
+</script>
+
 </body>
 
 </html>
